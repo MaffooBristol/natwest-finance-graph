@@ -1,0 +1,19 @@
+{
+  "name": "NWOLB Finances",
+  "version": "0.0.0",
+  "authors": [
+    "Matt Fletcher <naiveamoeba@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "moment": "~2.8.3"
+  }
+}
