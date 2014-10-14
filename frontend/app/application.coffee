@@ -1,6 +1,8 @@
 _dataModel = require 'models/data-model'
 _dataCollection = require 'collections/data-collection'
 
+_stateModel = require 'models/state-model'
+
 # The application bootstrapper.
 module.exports = class Application
   initialize: ->
@@ -9,10 +11,9 @@ module.exports = class Application
 
     @DataCollection = new _dataCollection model: _dataModel
 
-    # Ideally, initialized classes should be kept in controllers & mediator.
-    # If you're making big webapp, here's more sophisticated skeleton
-    # https://github.com/paulmillr/brunch-with-chaplin
-    @homeView = new HomeView()
+    @homeView = new HomeView app: @
+
+    @State = new _stateModel()
 
     # Instantiate the router
     @router = new Router()
