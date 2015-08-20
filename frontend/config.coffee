@@ -16,6 +16,7 @@ exports.config =
           'vendor/scripts/g.raphael.js'
           'vendor/scripts/g.line.js'
           'bower_components/moment'
+          'bower_components/ion.rangeSlider'
         ]
 
     stylesheets:

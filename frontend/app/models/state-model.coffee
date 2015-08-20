@@ -1,3 +1,4 @@
 module.exports = class Model extends Backbone.Model
   defaults:
-    'months': 24
+    from: 0
+    to: Date.now()

@@ -1,25 +1,31 @@
 app = require 'application'
 
-View = require './view'
-ChartView = require './chart-view'
+View       = require './view'
+ChartView  = require './chart-view'
+ListView   = require './list-view'
+SliderView = require './slider-view'
 
 Template = require './templates/home'
 
 module.exports = class HomeView extends View
   id: 'home-view'
   template: Template
+  templateHelpers: () ->
+    state: app.State.toJSON()
   initialize: (opts) ->
     @app = opts.app or {}
   events:
-    'keyup #months': 'updateMonths'
-  updateMonths: (e) ->
-    @app.State.set 'months', $(e.target).val()
-    # @app.State.trigger 'update:months', $(e.target).val()
-  render: () ->
-    @app.DataCollection.fetch
-      success: (_collection) =>
-        @$el.html @template
-        @chart = new ChartView collection: _collection, el: @$el.find('#chart'), app: @app
-        @chart.render().$el
+    'click .smooth': 'updateSmoothing'
+  updateSmoothing: (e) ->
+    @app.State.set 'smoothing', $(e.target).val()
+  afterRender: () ->
+    @chart = new ChartView collection: @collection, el: @$el.find('#chart'), app: @app
+    @chart.render().$el
+
+    @list = new ListView collection: @collection, el: @$el.find('#list'), app: @app
+    @list.render().$el
+
+    @months = new SliderView model: app.State, data: @collection, el: @$el.find('#months'), app: @app
+    @months.render().$el
 
     return @

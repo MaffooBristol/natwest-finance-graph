@@ -5,13 +5,15 @@ _stateModel = require 'models/state-model'
 
 # The application bootstrapper.
 module.exports = class Application
+  dateFormat: 'DD/MM/YYYY'
+  toUnix: (date) ->
+    return moment(date, @dateFormat).unix()
+  toDate: (timestamp) ->
+    return moment.unix(timestamp).format @dateFormat
   initialize: ->
-    HomeView = require 'views/home_view'
     Router = require 'lib/router'
 
     @DataCollection = new _dataCollection model: _dataModel
-
-    @homeView = new HomeView app: @
 
     @State = new _stateModel()
 

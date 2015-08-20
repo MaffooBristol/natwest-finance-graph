@@ -27,30 +27,31 @@ exports.get = function (callback) {
       var csvConverter = new csvtojson({constructResult: true});
 
       csvConverter.on('end_parsed', function (data) {
-        if (callback) {
-          if (--left === 0) {
-            // Ensure rows are unique.
-            ret = _.uniq(ret, function (x) {
-              return JSON.stringify(x);
-            });
-            // Required fields.
-            ret = _.filter(ret, function (x) {
-              return (
-                 x['Date']    !== undefined
-              && x['Balance'] !== undefined
-              && x['Date']    !== 'Date'
-              && x['Balance'] !== 'Balance'
-                );
-            });
-            // Order by date.
-            ret = _.sortBy(ret, function (x) {
-              return moment(x['Date'], 'DD/MM/YYYY').unix();
-            });
-            callback(ret);
-          }
-          else {
-            ret = ret.concat(data);
-          }
+        if (!callback) return;
+
+        if (--left === 0) {
+          ret = ret.concat(data);
+          // Ensure rows are unique.
+          ret = _.uniq(ret, function (x) {
+            return JSON.stringify(x);
+          });
+          // Required fields.
+          ret = _.filter(ret, function (x) {
+            return (
+               x['Date']    !== undefined
+            && x['Balance'] !== undefined
+            && x['Date']    !== 'Date'
+            && x['Balance'] !== 'Balance'
+              );
+          });
+          // Order by date.
+          ret = _.sortBy(ret, function (x) {
+            return moment(x['Date'], 'DD/MM/YYYY').unix();
+          });
+          callback(ret);
+        }
+        else {
+          ret = ret.concat(data);
         }
       });
 

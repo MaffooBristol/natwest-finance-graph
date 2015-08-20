@@ -2,8 +2,6 @@ app = require 'application'
 
 View = require './view'
 
-dateFormat = 'DD/MM/YYYY'
-
 module.exports = class ChartView extends View
   initialize: (opts) ->
     @app = opts.app or {}
@@ -11,35 +9,43 @@ module.exports = class ChartView extends View
     @initialCollection = _.clone opts.collection
     @app.State.on 'change update', (val) =>
       @render()
-  toUnix: (date) ->
-    return moment(date, dateFormat).unix()
-  toDate: (timestamp) ->
-    return moment.unix(timestamp).format(dateFormat)
+  smoothOut: (arr = []) ->
+    a = []
+    l = null
+    for n in arr
+      if l? then a.push (n + l) / 2
+      l = n
+    return a
   afterRender: () ->
     _self = @
-    console.log @initialCollection.models.length
+
     @collection.reset @initialCollection.models, silent: true
+
+    # @collection.reset @smoothOut(@collection.models), silent: true
 
     svgElement = @$el
     svgElement.empty()
 
     paper = Raphael svgElement.get(0), svgElement.width(), svgElement.height()
 
-    _months = @app.State.get('months')
-    if _months > 0
-      filtered = @collection.filter (x) =>
-        return @toUnix(x.get('Date')) > @toUnix(moment().subtract(_months, 'months'))
-      @collection.reset filtered
+    # _months = @app.State.get('months')
+
+    filtered = @collection.filter (x) =>
+      _date = app.toUnix(x.get('Date'))
+      return _date > @app.State.get('from') and _date < @app.State.get('to')
+    @collection.reset filtered
 
     x = []
     for z in @collection.pluck 'Date'
-      x.push @toUnix z
+      x.push app.toUnix z
     y = []
     for z in @collection.pluck 'Balance'
-      y.push z
+      y.push parseFloat z, 10
 
-    console.log @toDate _.min x
-    console.log @toDate _.max x
+    smoothingFactor = @app.State.get('smoothing') or 0
+
+    for [1..smoothingFactor]
+      y = @smoothOut y
 
     chart = paper.linechart(
       20
@@ -49,7 +55,7 @@ module.exports = class ChartView extends View
       [x, [_.min(x), _.max(x)]]
       [y, [1, 1]]
       {
-        symbol: 'circle'
+        # symbol: 'circle'
         width: 0.5
         smooth: false
         axis: '0 0 1 1'
@@ -64,7 +70,7 @@ module.exports = class ChartView extends View
       # console.log moment.unix(axis).format(dateFormat)
 
       ting = _self.collection.find (x) ->
-        x.get('Date') == _self.toDate axis
+        x.get('Date') == app.toDate axis
 
       if ting?
         $('#description').html ting.get('Date') + ' : ' + ting.get('Description') + ' / ' + ting.get('Value')
@@ -75,5 +81,5 @@ module.exports = class ChartView extends View
 
     while i < l
       date = axisItems[i].attr("text")
-      axisItems[i].attr "text", @toDate date
+      axisItems[i].attr "text", app.toDate date
       i++
