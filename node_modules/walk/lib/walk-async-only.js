@@ -7,6 +7,7 @@
   function noop() {}
 
   var fs = require('fs'),
+    path = require('path'),
     EventEmitter = require('events').EventEmitter,
     TypeEmitter = require('./node-type-emitter');
 
@@ -35,7 +36,7 @@
         emitter.emit('names', curpath, files, noop);
         files.forEachAsync(function (cont, file) {
           emitter.emit('name', curpath, file, noop);
-          fs.lstat(curpath + '/' + file, function (err, stat) {
+          fs.lstat(curpath + path.sep + file, function (err, stat) {
             stat = stat || {};
             stat.name = file;
             if (err) {
@@ -79,7 +80,7 @@
     }
     
     function fullPath(v,i,o) {
-      o[i]= [curpath, '/', v].join('');
+      o[i]= [curpath, path.sep, v].join('');
     }
     
     curpath = pathname;
