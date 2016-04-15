@@ -3,14 +3,14 @@
 
 // Rows are: Date, Type, Description, Value, Balance, Account Name, Account Number
 
-const fs = require('fs');
-const path = require('path');
-const glob = require('glob');
+const fs       = require('fs');
+const path     = require('path');
+const glob     = require('glob');
 const inquirer = require('inquirer');
-const emoji = require('node-emoji');
+const emoji    = require('node-emoji');
 
 const Server = require('./lib/server.js');
-const List = require('./lib/list.js');
+const List   = require('./lib/list.js');
 
 const port = 1234;
 
