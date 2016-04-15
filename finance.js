@@ -16,7 +16,7 @@ const port = 1234;
 
 GLOBAL.paths = {
   CSV_PATH: './place-csvs-here',
-  CLIENT_PATH: './frontend/public',
+  CLIENT_PATH: './client/public',
 }
 
 glob(`${GLOBAL.paths.CSV_PATH}/*.csv`, (err, files) => {
