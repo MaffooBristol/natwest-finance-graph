@@ -26,7 +26,7 @@ const babelOpts = {presets: ['es2015', 'react']};
 
 function bundleJS(bundler) {
   return bundler.bundle()
-    .pipe(source(entryFile))
+    .pipe(source(bundleFile))
     .pipe(buffer())
     .pipe(gulp.dest(clientDir + publicDir))
     .pipe(rename(bundleFile))

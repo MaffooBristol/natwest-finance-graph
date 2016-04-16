@@ -1,11 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class Hello extends React.Component {
+import App from './Components/App.jsx';
 
-  render() {
-    return <div>Ey up, {this.props.name}!</div>
-  }
-}
-
-ReactDOM.render(<Hello name='poppet'/>, document.getElementById('app'));
+ReactDOM.render(<App />, document.getElementById('app'));
