@@ -16,8 +16,8 @@ const List   = require('./lib/list.js');
 const port = 1234;
 
 GLOBAL.paths = {
-  CSV_PATH: './place-csvs-here',
-  CLIENT_PATH: './client/public',
+  CSV_PATH:    './place-csvs-here',
+  CLIENT_PATH: './client2/public',
 }
 
 const cli = meow(`
