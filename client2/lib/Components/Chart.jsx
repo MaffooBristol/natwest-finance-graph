@@ -1,43 +1,7 @@
 import React from 'react';
-import ChartJS from 'react-chartjs';
-
-const LineChart = ChartJS.Line;
-
-// Rand function, will remove when using real data.
-const rand = (min, max, num) => {
-  var rtn = [];
-  while (rtn.length < num) {
-    rtn.push((Math.random() * (max - min)) + min);
-  }
-  return rtn;
-}
-
-// Dummy datasets.
-const datasets = {
-  labels: ["January", "February", "March", "April", "May", "June", "July"],
-  datasets: [
-    {
-      label: "My First dataset",
-      fillColor: "rgba(220,220,220,0.2)",
-      strokeColor: "rgba(220,220,220,1)",
-      pointColor: "rgba(220,220,220,1)",
-      pointStrokeColor: "#fff",
-      pointHighlightFill: "#fff",
-      pointHighlightStroke: "rgba(220,220,220,1)",
-      data: rand(32, 100, 7)
-    },
-    {
-      label: "My Second dataset",
-      fillColor: "rgba(151,187,205,0.2)",
-      strokeColor: "rgba(151,187,205,1)",
-      pointColor: "rgba(151,187,205,1)",
-      pointStrokeColor: "#fff",
-      pointHighlightFill: "#fff",
-      pointHighlightStroke: "rgba(151,187,205,1)",
-      data: rand(32, 100, 7)
-    }
-  ]
-};
+import _ from 'lodash';
+import Moment from 'moment';
+import Dygraph from 'react-dygraphs';
 
 export default class Chart extends React.Component {
   componentDidMount () {
@@ -45,6 +9,13 @@ export default class Chart extends React.Component {
     // ... but will have to work out what I'm doing with Redux or Flux or wevz.
   }
   render () {
-    return <LineChart data={datasets} options={{responsive:true}} height="300" width="600" />;
+    var graphData = [[0,0]];
+    if (this.props.transactions && this.props.transactions.length) {
+      graphData = _.map(this.props.transactions, (row, index) => {
+        return [new Date(Moment(row.Date, 'DD/MM/YYYY')), row.Value, row.Balance];
+      });
+    }
+    const labels = ['Date', 'Value', 'Balance'];
+    return <Dygraph data={graphData} labels={labels} height={600} width={1200} />;
   }
 }
