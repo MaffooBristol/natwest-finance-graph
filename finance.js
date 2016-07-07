@@ -29,6 +29,7 @@ const cli = meow(`
       -a, --action view-all       View a list of all transactions
       -i, --action view-incoming  View a list of incoming transactions
       -o, --action view-outgoing  View a list of outgoing transactions
+      -O, --use-old               Use the old version of the app (Backbone)
 
     Examples
       $ ./finance.js -s
@@ -39,9 +40,14 @@ const cli = meow(`
     s: 'server',
     a: 'view_all',
     i: 'view_incoming',
-    o: 'view_outgoing'
+    o: 'view_outgoing',
+    O: 'use_old'
   }
 });
+
+if (cli.flags.useOld) {
+  GLOBAL.paths.CLIENT_PATH = './client/public';
+}
 
 const actions = {
   main: (answers) => {

@@ -3,6 +3,7 @@ const gulp = require('gulp');
 const browserify = require('browserify');
 const watchify = require('watchify');
 const babelify = require('babelify');
+const stylify = require('stylify');
 
 const merge = require('utils-merge')
 const source = require('vinyl-source-stream');
