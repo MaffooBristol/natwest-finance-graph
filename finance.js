@@ -1,54 +1,30 @@
-#!/usr/bin/env node
-'use strict';
+"use strict";
 
-// Rows are: Date, Type, Description, Value, Balance, Account Name, Account Number
+import fs       from 'fs';
+import path     from 'path';
+import glob     from 'glob';
+import inquirer from 'inquirer';
+import emoji    from 'node-emoji';
 
-const fs       = require('fs');
-const path     = require('path');
-const glob     = require('glob');
-const inquirer = require('inquirer');
-const meow     = require('meow');
-const emoji    = require('node-emoji');
-
-const Server = require('./lib/server.js');
-const List   = require('./lib/list.js');
+import CLI    from './lib/cli';
+import Server from './lib/server';
+import List   from './lib/list';
 
 const port = 1234;
 
-GLOBAL.paths = {
+global.paths = {
   CSV_PATH:    './place-csvs-here',
   CLIENT_PATH: './client2/public',
 }
 
-const cli = meow(`
-    Usage
-      $ ./finance.js
-
-    Options
-      -s, --action server         Start the client server
-      -a, --action view-all       View a list of all transactions
-      -i, --action view-incoming  View a list of incoming transactions
-      -o, --action view-outgoing  View a list of outgoing transactions
-      -O, --use-old               Use the old version of the app (Backbone)
-
-    Examples
-      $ ./finance.js -s
-      $ ./finance.js --view-outgoing
-
-`, {
-  alias: {
-    s: 'server',
-    a: 'view_all',
-    i: 'view_incoming',
-    o: 'view_outgoing',
-    O: 'use_old'
-  }
-});
+const cli = new CLI();
 
 if (cli.flags.useOld) {
-  GLOBAL.paths.CLIENT_PATH = './client/public';
+  global.paths.CLIENT_PATH = './client/public';
 }
 
+// I want to rewrite this or move it somewhere or just generally make it
+// far more streamlined!
 const actions = {
   main: (answers) => {
     if (answers.action === 'server') {
@@ -74,6 +50,7 @@ const actions = {
   }
 }
 
+// Same with this, pretty ugly at the moment.
 glob(`${GLOBAL.paths.CSV_PATH}/*.csv`, (err, files) => {
 
   if (err || !files.length) {
@@ -104,6 +81,4 @@ glob(`${GLOBAL.paths.CSV_PATH}/*.csv`, (err, files) => {
       ]
     }]).then(actions.main);
   }
-
-
 });

@@ -3,7 +3,6 @@ const gulp = require('gulp');
 const browserify = require('browserify');
 const watchify = require('watchify');
 const babelify = require('babelify');
-const stylify = require('stylify');
 
 const merge = require('utils-merge')
 const source = require('vinyl-source-stream');
@@ -23,7 +22,7 @@ const publicDir  = 'public/';
 const entryFile  = 'main.jsx';
 const bundleFile = 'bundle.js';
 
-const babelOpts = {presets: ['es2015', 'react']};
+const babelOpts = {presets: ['es2015', 'react', 'stage-0']};
 
 function bundleJS(bundler) {
   return bundler.bundle()
@@ -39,7 +38,7 @@ function bundleJS(bundler) {
 
 gulp.task('watch', function () {
   var args = merge(watchify.args, {debug: true});
-  var bundler = watchify(browserify(clientDir + libDir + entryFile, args)).transform(babelify, babelOpts);
+  var bundler = watchify(browserify(clientDir + libDir + entryFile, args)).transform(babelify, babelOpts).plugin(['css-modulesify']);
   bundleJS(bundler);
 
   bundler.on('update', function () {
@@ -52,13 +51,13 @@ gulp.task('watch', function () {
 });
 
 gulp.task('build', function () {
-  var bundler = browserify(clientDir + libDir + entryFile, {debug: true}).transform(babelify, babelOpts);
+  var bundler = browserify(clientDir + libDir + entryFile, {debug: true}).transform(babelify, babelOpts).plugin(['css-modulesify']);
   return bundleJS(bundler);
 })
 
 gulp.task('build-production', function () {
   process.env.NODE_ENV = 'production';
-  var bundler = browserify(clientDir + libDir + entryFile).transform(babelify, babelOpts);
+  var bundler = browserify(clientDir + libDir + entryFile).transform(babelify, babelOpts).plugin(['css-modulesify']);
   return bundler.bundle()
     .pipe(source(entryFile))
     .pipe(buffer())
