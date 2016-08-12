@@ -3,3 +3,5 @@ tmp
 bin
 node_modules
 *.log
+*.bak
+legacy_client/public
