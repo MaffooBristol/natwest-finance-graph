@@ -1,11 +1,14 @@
-import styles from './styles.css';
-// import styles from 'react-virtualized/styles.css';
+'use strict';
+
+// This is shit atm because all the table modules aren't very good.
 
 import React from 'react';
 import _ from 'lodash';
-import {Table, Column, Cell} from 'fixed-data-table';
+// import {Table, Column, Cell} from 'fixed-data-table';
 import 'react-addons-shallow-compare';
 import {FlexTable, FlexColumn} from 'react-virtualized'
+
+import styles from 'react-virtualized/styles.css';
 
 const TextCell = ({rowIndex, data, col, ...props}) => {
   let cellData = data[rowIndex][col];
@@ -19,10 +22,18 @@ const TextCell = ({rowIndex, data, col, ...props}) => {
   );
 }
 
-class TransactionList extends React.Component {
+export default class TransactionList extends React.Component {
 
   rowGetter = ({index}) => {
     return this.props.transactions[index];
+  }
+
+  _rowClassName ({index}) {
+    if (index < 0) {
+      return styles.headerRow
+    } else {
+      return index % 2 === 0 ? styles.evenRow : styles.oddRow
+    }
   }
 
   render () {
@@ -74,12 +85,15 @@ class TransactionList extends React.Component {
         </Table>
       </div>
     );*/
+    return null;
     return (
       <FlexTable
-        class="${styles.FlexTable}"
         ref='Table'
         height={400}
         width={600}
+        className={styles.FlexTable}
+        headerClassName={styles.FlexTable__headerColumn}
+        rowClassName={::this._rowClassName}
         rowHeight={20}
         rowCount={200}
         rowGetter={this.rowGetter}>
@@ -117,5 +131,3 @@ class TransactionList extends React.Component {
     );
   }
 }
-
-export default TransactionList;
