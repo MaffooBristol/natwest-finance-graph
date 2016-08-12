@@ -1,6 +1,6 @@
 apps:
   - script: index.js
-    name: 'Finances'
+    name: 'MoneyBadger'
     args: '--action=server'
     instances: 1
     exec_mode: cluster

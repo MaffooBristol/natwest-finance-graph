@@ -1,8 +1,8 @@
 {
-  "name": "finances",
-  "version": "0.0.0",
+  "name": "Money Badger",
+  "version": "0.0.1",
   "description": "",
-  "main": "finance.js",
+  "main": "index.js",
   "scripts": {
     "build": "browserify -t [babelify --presets es2015 --presets react --presets stage-0] -p [css-modulesify --global -o client2/public/bundle.css] -o client2/public/bundle.js client2/lib/main.jsx",
     "watch": "watchify -v -t [babelify --presets es2015 --presets react --presets stage-0] -p [css-modulesify --global -o client2/public/bundle.css] -o client2/public/bundle.js client2/lib/main.jsx",
