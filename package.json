@@ -6,7 +6,9 @@
   "scripts": {
     "build": "browserify -t [babelify --presets es2015 --presets react --presets stage-0] -p [css-modulesify --global -o client2/public/bundle.css] -o client2/public/bundle.js client2/lib/main.jsx",
     "watch": "watchify -v -t [babelify --presets es2015 --presets react --presets stage-0] -p [css-modulesify --global -o client2/public/bundle.css] -o client2/public/bundle.js client2/lib/main.jsx",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "karma start",
+    "test:tdd": "npm run test -- --auto-watch --no-single-run",
+    "test:lint": "eslint ./app ./tests ./client2 ./lib ./index.js ./finance.js --ext .js --ext .jsx --ignore-path .gitignore --ignore-pattern dist --ignore-pattern public --cache"
   },
   "author": "Matt Fletcher",
   "license": "ISC",
@@ -40,6 +42,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.3.7",
+    "babel-eslint": "^6.1.2",
     "babel-preset-es2015": "^6.6.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
@@ -50,6 +53,12 @@
     "browserify-css": "^0.9.1",
     "chalk": "^1.1.3",
     "css-modulesify": "^0.25.1",
+    "eslint": "^3.3.0",
+    "eslint-config-standard": "^5.3.5",
+    "eslint-loader": "^1.5.0",
+    "eslint-plugin-promise": "^2.0.1",
+    "eslint-plugin-react": "^6.0.0",
+    "eslint-plugin-standard": "^2.0.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-rename": "^1.2.2",
@@ -57,6 +66,7 @@
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
     "ignore-styles": "^4.0.0",
+    "karma": "^1.2.0",
     "react": "^15.0.1",
     "reactify": "^1.1.1",
     "stylify": "^1.3.1",

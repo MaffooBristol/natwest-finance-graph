@@ -20,14 +20,14 @@ const style = {
       marginRight: 5
     }
   }
-}
+};
 
 export class Chart extends React.Component {
   componentDidMount () {
     this.props.socket.emit('transactions:request', {filter: 'none'});
   }
   render () {
-    let graphData = [[0,0,0]];
+    let graphData = [[0, 0, 0]];
     if (this.props.transactions && this.props.transactions.length) {
       let balances = _.map(this.props.transactions, 'Balance');
       graphData = _.map(this.props.transactions, (row, index) => {
@@ -57,7 +57,7 @@ export class Chart extends React.Component {
 
 export class Chart2 extends React.Component {
   componentWillMount () {
-    this.setState({opts: {groupBy: 'isoWeek'}})
+    this.setState({opts: {groupBy: 'isoWeek'}});
   }
   componentDidMount () {
     this.loadData();
@@ -72,7 +72,7 @@ export class Chart2 extends React.Component {
     });
   }
   render () {
-    let graphData = [[0,0,0,0]];
+    let graphData = [[0, 0, 0, 0]];
     if (this.props.stats && this.props.stats.length) {
       graphData = _.map(this.props.stats, (row, index) => {
         return [new Date(Moment(row.Date, 'DD/MM/YYYY')), parseFloat(row.net), parseFloat(row.incoming), -parseFloat(row.outgoing)];

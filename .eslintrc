@@ -1,0 +1,25 @@
+{
+  "extends": [
+    "eslint:recommended", "plugin:react/recommended",
+    "standard"
+  ],
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true,
+    "mocha": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "semi": [2, "always"],
+    "no-console": 0,
+    "no-unused-vars": 0,
+    "react/display-name": 0,
+    "react/prop-types": 0,
+    "react/no-multi-comp": 0,
+    "no-multi-spaces": 0,
+    "brace-style": [2, "stroustrup", { "allowSingleLine": true }]
+  }
+}

@@ -4,9 +4,9 @@
 
 import React from 'react';
 import _ from 'lodash';
-// import {Table, Column, Cell} from 'fixed-data-table';
+import {Table, Column, Cell} from 'fixed-data-table';
 import 'react-addons-shallow-compare';
-import {FlexTable, FlexColumn} from 'react-virtualized'
+import {FlexTable, FlexColumn} from 'react-virtualized';
 
 import styles from 'react-virtualized/styles.css';
 
@@ -20,7 +20,7 @@ const TextCell = ({rowIndex, data, col, ...props}) => {
       {cellData}
     </Cell>
   );
-}
+};
 
 export default class TransactionList extends React.Component {
 
@@ -30,9 +30,10 @@ export default class TransactionList extends React.Component {
 
   _rowClassName ({index}) {
     if (index < 0) {
-      return styles.headerRow
-    } else {
-      return index % 2 === 0 ? styles.evenRow : styles.oddRow
+      return styles.headerRow;
+    }
+    else {
+      return index % 2 === 0 ? styles.evenRow : styles.oddRow;
     }
   }
 
@@ -41,7 +42,7 @@ export default class TransactionList extends React.Component {
     // Date, Type, Description, Value, Balance, Account Name, Account Number
     let style = {
       fontSize: '0.8em'
-    }
+    };
 /*    return (
       <div>
         <Table
@@ -85,7 +86,6 @@ export default class TransactionList extends React.Component {
         </Table>
       </div>
     );*/
-    return null;
     return (
       <FlexTable
         ref='Table'

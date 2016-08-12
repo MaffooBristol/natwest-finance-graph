@@ -24,7 +24,7 @@ const style = {
         fontSize: '0.9em',
         padding: '2px 0'
       }
-    },
+    }
   },
   dropzone: {
     padding: '20px',
@@ -35,7 +35,7 @@ const style = {
     color: '#69c',
     cursor: 'pointer'
   }
-}
+};
 
 class StatementRow extends React.Component {
   render () {

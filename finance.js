@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 import fs       from 'fs';
 import path     from 'path';
@@ -13,9 +13,9 @@ import {Transactions} from './lib/Data';
 global.port = 1234;
 
 global.paths = {
-  CSV_PATH:    './place-csvs-here',
-  CLIENT_PATH: './client2/public',
-}
+  CSV_PATH: './place-csvs-here',
+  CLIENT_PATH: './client2/public'
+};
 
 const cli = new CLI();
 const flags = cli.flags;
@@ -42,7 +42,7 @@ const actions = {
           console.log('The cache was rebuilt.');
         }).catch((err) => {
           console.error(`Caught an error: ${err.message}`);
-        }).error(() => {
+        }).error((err) => {
           console.error(`Uncaught error: ${err.message}`);
         });
       default:
@@ -50,8 +50,7 @@ const actions = {
         break;
     }
   }
-}
-
+};
 
 if (cli.flags && flags.action) {
   actions.main({action: flags.action});
