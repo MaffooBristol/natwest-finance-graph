@@ -6,8 +6,8 @@
   "scripts": {
     "build": "browserify -t [babelify --presets es2015 --presets react --presets stage-0] -p [css-modulesify --global -o client2/public/bundle.css] -o client2/public/bundle.js client2/lib/main.jsx",
     "watch": "watchify -v -t [babelify --presets es2015 --presets react --presets stage-0] -p [css-modulesify --global -o client2/public/bundle.css] -o client2/public/bundle.js client2/lib/main.jsx",
-    "test": "karma start",
-    "test:tdd": "npm run test -- --auto-watch --no-single-run",
+    "test": "npm run test:lint",
+    "test:tdd": "karma start --auto-watch --no-single-run",
     "test:lint": "eslint ./app ./tests ./client2 ./lib ./index.js ./finance.js --ext .js --ext .jsx --ignore-path .gitignore --ignore-pattern dist --ignore-pattern public --cache"
   },
   "author": "Matt Fletcher",
