@@ -12,6 +12,10 @@
   },
   "author": "Matt Fletcher",
   "license": "ISC",
+  "engines": {
+    "node": ">=5.9.1",
+    "npm": ">=3.10.3"
+  },
   "dependencies": {
     "async": "^2.0.1",
     "babel-register": "^6.11.6",
