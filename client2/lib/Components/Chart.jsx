@@ -4,7 +4,6 @@ import React    from 'react';
 import _        from 'lodash';
 import Moment   from 'moment';
 import Dygraph  from 'react-dygraphs';
-import {Button} from 'react-bootstrap';
 
 const averageWidth = 200;
 
