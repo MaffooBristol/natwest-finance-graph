@@ -78,15 +78,29 @@ export class Chart2 extends React.Component {
         return [new Date(Moment(row.Date, 'DD/MM/YYYY')), parseFloat(row.net), parseFloat(row.incoming), -parseFloat(row.outgoing)];
       });
     }
-    const labels = ['Date', 'Net', 'Incoming', 'Outgoing'];
-    const colors = ['#6ad', '#6d6', '#d66'];
+    else {
+      return <div />;
+    }
+    const labels = ['Date', 'Net', 'Incoming', 'Outgoing', 'Balance'];
+    const colors = ['#6ad', '#6d6', '#d66', '#999'];
+
+    let groupButtons = [];
+    [['Day', 'day'], ['Weeks', 'isoWeek'], ['Months', 'month'], ['Year', 'year']].forEach((groupBy) => {
+      groupButtons.push(
+        <button
+          style={style.actions.action}
+          disabled={this.state.opts.groupBy === groupBy[1]}
+          onClick={this.loadData.bind(this, {groupBy: groupBy[1]})}>
+          {groupBy[0]}
+        </button>
+      );
+    });
+
     return (
       <div>
         <div style={style.actions}>
           <button style={style.actions.action} onClick={this.loadData.bind(this, null)}>Refresh</button>
-          <button style={style.actions.action} disabled={this.state.opts.groupBy === 'day'} onClick={this.loadData.bind(this, {groupBy: 'day'})}>Days</button>
-          <button style={style.actions.action} disabled={this.state.opts.groupBy === 'isoWeek'} onClick={this.loadData.bind(this, {groupBy: 'isoWeek'})}>Weeks</button>
-          <button style={style.actions.action} disabled={this.state.opts.groupBy === 'month'} onClick={this.loadData.bind(this, {groupBy: 'month'})}>Months</button>
+          {groupButtons}
         </div>
         <div style={style}>
           <Dygraph data={graphData}
