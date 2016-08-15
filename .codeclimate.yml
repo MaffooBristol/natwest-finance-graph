@@ -6,6 +6,11 @@ engines:
     config:
       languages:
         - javascript
+  fixme:
+    enabled: true
+    config:
+      strings:
+      - "@todo"
 ratings:
   paths:
   - **.js
