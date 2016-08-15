@@ -13,10 +13,10 @@ engines:
       - "@todo"
 ratings:
   paths:
-  - **.js
-  - **.jsx
-  - lib/**/*
-  - client2/**/*
+  - "**.js"
+  - "**.jsx"
+  - "lib/**/*"
+  - "client2/**/*"
 exclude_paths:
 - "legacy_client"
 - "**/public"
