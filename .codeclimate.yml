@@ -1,0 +1,4 @@
+exclude_paths:
+- "legacy_client"
+- "**/public"
+- "place-csvs-here"
