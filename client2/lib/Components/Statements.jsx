@@ -50,7 +50,7 @@ class StatementRow extends React.Component {
 
 class StatementList extends React.Component {
   componentWillMount () {
-    this.props.socket.emit('statements:request');
+    this.props.sockets.statements.emit('statements:request');
   }
   render () {
     let rows = [];

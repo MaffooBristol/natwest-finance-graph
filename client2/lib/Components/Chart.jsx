@@ -1,9 +1,10 @@
 'use strict';
 
-import React    from 'react';
-import _        from 'lodash';
-import Moment   from 'moment';
-import Dygraph  from 'react-dygraphs';
+import React   from 'react';
+import update  from 'react-addons-update';
+import _       from 'lodash';
+import Moment  from 'moment';
+import Dygraph from 'react-dygraphs';
 
 const averageWidth = 200;
 
@@ -22,74 +23,110 @@ const style = {
 };
 
 export class Chart extends React.Component {
-  componentDidMount () {
-    this.props.socket.emit('transactions:request', {filter: 'none'});
-  }
-  render () {
-    let graphData = [[0, 0, 0]];
-    if (this.props.transactions && this.props.transactions.length) {
-      let balances = _.map(this.props.transactions, 'Balance');
-      graphData = _.map(this.props.transactions, (row, index) => {
-        let _avg = _.filter(_.slice(balances, (index - averageWidth) > -1 ? index - averageWidth : 0, index + averageWidth + 1));
-        let rollingAverage = _avg.reduce((a, b) => a + b, 0) / _avg.length;
-        return [new Date(Moment(row.Date, 'DD/MM/YYYY')), parseFloat(row.Balance), parseFloat(rollingAverage)];
-      });
-    }
-    const labels = ['Date', 'Balance', 'Rolling Average'];
-    const colors = ['#6ad', '#acf'];
-    return (
-      <div style={style}>
-        <Dygraph data={graphData}
-        labels={labels}
-        height={600}
-        colors={colors}
-        gridLineColor={'#ddd'}
-        axisLabelColor={'#666'}
-        axisLineColor={'#666'}
-        axisLabelFontSize={11}
-        underlayCallback={this.underlayCallback}
-        />
-      </div>
-    );
-  }
-}
 
-export class Chart2 extends React.Component {
   componentWillMount () {
-    this.setState({opts: {groupBy: 'isoWeek'}});
+    this.displayLines = {
+      incoming: {label: 'Incoming', color: '#6d6'},
+      outgoing: {label: 'Outgoing', color: '#d66'},
+      net: {label: 'Net', color: '#6ad'},
+      balance: {label: 'Balance', color: '#999'}
+    };
+    this.setState({groupBy: 'isoWeek'});
+    this.props.sockets.stats.on('stats:receive', (err, data) => {
+      if (err) {
+        console.error(err.stack);
+      }
+      if (data.id !== 'Chart') {
+        return;
+      }
+      this.setState({stats: data.data});
+    });
+    this.setState({displayLines: {incoming: true, outgoing: true}});
   }
+
   componentDidMount () {
     this.loadData();
   }
+
   loadData (opts) {
-    if (opts) {
-      this.setState({opts: opts});
+    if (opts && opts.groupBy !== undefined) {
+      this.setState({groupBy: opts.groupBy});
     }
     // This is required because setState doesn't finish until next tick.
     setTimeout(() => {
-      this.props.socket.emit('stats:request', this.state.opts);
+      this.props.sockets.stats.emit('stats:request', {id: 'Chart', groupBy: this.state.groupBy});
+    }, 500);
+  }
+
+  toggleLine (line) {
+    this.setState({
+      displayLines: update(this.state.displayLines, {
+        $merge: {
+          [line]: !this.state.displayLines[line]
+        }
+      })
     });
   }
+
   render () {
-    let graphData = [[0, 0, 0, 0]];
-    if (this.props.stats && this.props.stats.length) {
-      graphData = _.map(this.props.stats, (row, index) => {
-        return [new Date(Moment(row.Date, 'DD/MM/YYYY')), parseFloat(row.net), parseFloat(row.incoming), -parseFloat(row.outgoing)];
-      });
-    }
-    else {
+    if (!this.state.stats || !this.state.stats.length) {
       return <div />;
     }
-    const labels = ['Date', 'Net', 'Incoming', 'Outgoing', 'Balance'];
-    const colors = ['#6ad', '#6d6', '#d66', '#999'];
+
+    let graphData = _.map(this.state.stats, (row, index) => {
+      let output = [new Date(Moment(row.Date, 'DD/MM/YYYY'))];
+      _.each(this.displayLines, (displayLine, key) => {
+        if (!this.state.displayLines[key]) {
+          return;
+        }
+        switch (key) {
+          case 'incoming':
+            output.push(parseFloat(row.incoming));
+            break;
+          case 'outgoing':
+            output.push(-parseFloat(row.outgoing));
+            break;
+          case 'net':
+            output.push(parseFloat(row.net));
+            break;
+          case 'balance':
+            output.push(parseFloat(row.balance));
+            break;
+          default:
+            output.push(0);
+            break;
+        }
+      });
+      return output;
+    });
+
+    let labels = ['Date'];
+    let colors = [];
+    let displayLinesButtons = [];
+
+    _.each(this.displayLines, (displayLine, key) => {
+      if (this.state.displayLines[key]) {
+        labels.push(displayLine.label);
+        colors.push(displayLine.color);
+      }
+      displayLinesButtons.push(
+        <button
+          style={style.actions.action}
+          onClick={this.toggleLine.bind(this, key)}
+          key={key}>
+          {displayLine.label}
+        </button>
+      );
+    });
 
     let groupButtons = [];
     [['Day', 'day'], ['Weeks', 'isoWeek'], ['Months', 'month'], ['Year', 'year']].forEach((groupBy) => {
       groupButtons.push(
         <button
           style={style.actions.action}
-          disabled={this.state.opts.groupBy === groupBy[1]}
-          onClick={this.loadData.bind(this, {groupBy: groupBy[1]})}>
+          disabled={this.state.groupBy === groupBy[1]}
+          onClick={this.loadData.bind(this, {groupBy: groupBy[1]})}
+          key={groupBy[1]}>
           {groupBy[0]}
         </button>
       );
@@ -100,6 +137,7 @@ export class Chart2 extends React.Component {
         <div style={style.actions}>
           <button style={style.actions.action} onClick={this.loadData.bind(this, null)}>Refresh</button>
           {groupButtons}
+          {displayLinesButtons}
         </div>
         <div style={style}>
           <Dygraph data={graphData}
