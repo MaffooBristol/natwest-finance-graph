@@ -11,6 +11,8 @@ engines:
     config:
       strings:
       - "@todo"
+  nodesecurity:
+    enabled: true
 ratings:
   paths:
   - "**.js"
