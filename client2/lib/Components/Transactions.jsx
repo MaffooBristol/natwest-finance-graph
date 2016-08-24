@@ -85,7 +85,7 @@ export default class TransactionList extends React.Component {
           />
         </Table>
       </div>
-    );*/
+    ); */
     return (
       <FlexTable
         ref='Table'
