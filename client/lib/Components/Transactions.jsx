@@ -8,7 +8,7 @@ import {Table, Column, Cell} from 'fixed-data-table';
 import 'react-addons-shallow-compare';
 import {FlexTable, FlexColumn} from 'react-virtualized';
 
-import styles from 'react-virtualized/styles.css';
+// import styles from 'react-virtualized/styles.css';
 
 const TextCell = ({rowIndex, data, col, ...props}) => {
   let cellData = data[rowIndex][col];

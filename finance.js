@@ -1,8 +1,7 @@
 'use strict';
 
-import fs       from 'fs';
-import path     from 'path';
-import glob     from 'glob';
+import fs   from 'fs';
+import path from 'path';
 
 import CLI    from './lib/cli';
 import Server from './lib/server';

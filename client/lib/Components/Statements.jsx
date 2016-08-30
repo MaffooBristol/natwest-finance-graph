@@ -39,7 +39,7 @@ const style = {
 
 class StatementRow extends React.Component {
   statementRow (key) {
-    return <div style={style.statements.statement[key]}>{this.props.statement[key]}</div>;
+    return <div style={style.statements.statement[key]} key={key}>{this.props.statement[key]}</div>;
   }
   render () {
     return (

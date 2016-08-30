@@ -4,3 +4,7 @@ bundle.map
 bundle.min.js
 bundle.min.js.map
 bundle.min.map
+bundle.css
+bundle.min.css
+bundle.css.map
+bundle.min.css.map
