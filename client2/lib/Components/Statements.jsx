@@ -38,11 +38,13 @@ const style = {
 };
 
 class StatementRow extends React.Component {
+  statementRow (key) {
+    return <div style={style.statements.statement[key]}>{this.props.statement[key]}</div>;
+  }
   render () {
     return (
       <li style={style.statements.statement}>
-        <div style={style.statements.statement.filename}>{this.props.statement.filename}</div>
-        <div style={style.statements.statement.filesize}>{this.props.statement.size}</div>
+        {_.map(['filename', 'filesize'], (row) => this.statementRow(row))}
       </li>
     );
   }
