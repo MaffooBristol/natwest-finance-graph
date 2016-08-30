@@ -20,10 +20,6 @@ global.paths = {
 const cli = new CLI();
 const flags = cli.flags;
 
-if (flags.useOld) {
-  global.paths.CLIENT_PATH = './legacy_client/public';
-}
-
 // I want to rewrite this or move it somewhere or just generally make it
 // far more streamlined!
 const actions = {
