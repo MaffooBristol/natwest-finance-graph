@@ -18,7 +18,7 @@ ratings:
   - "**.js"
   - "**.jsx"
   - "lib/**/*"
-  - "client2/**/*"
+  - "client/**/*"
 exclude_paths:
 - "legacy_client"
 - "**/public"

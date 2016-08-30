@@ -14,7 +14,7 @@ global.port = 1234;
 
 global.paths = {
   CSV_PATH: './place-csvs-here',
-  CLIENT_PATH: './client2/public'
+  CLIENT_PATH: './client/public'
 };
 
 const cli = new CLI();
