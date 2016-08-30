@@ -28,14 +28,14 @@ export default class TransactionList extends React.Component {
     return this.props.transactions[index];
   }
 
-  _rowClassName ({index}) {
-    if (index < 0) {
-      return styles.headerRow;
-    }
-    else {
-      return index % 2 === 0 ? styles.evenRow : styles.oddRow;
-    }
-  }
+  // _rowClassName ({index}) {
+  //   if (index < 0) {
+  //     return styles.headerRow;
+  //   }
+  //   else {
+  //     return index % 2 === 0 ? styles.evenRow : styles.oddRow;
+  //   }
+  // }
 
   render () {
     if (!this.props.transactions.length) return null;
@@ -91,8 +91,6 @@ export default class TransactionList extends React.Component {
         ref='Table'
         height={400}
         width={600}
-        className={styles.FlexTable}
-        headerClassName={styles.FlexTable__headerColumn}
         rowClassName={::this._rowClassName}
         rowHeight={20}
         rowCount={200}
