@@ -1,7 +1,8 @@
 'use strict';
 
-import React from 'react';
-import _     from 'lodash';
+import React  from 'react';
+import _      from 'lodash';
+import moment from 'moment';
 
 const style = {
   currency: {
@@ -62,11 +63,12 @@ export class MonthStats extends React.Component {
   }
   render () {
     if (this.state && this.state.stats.length) {
+      let inRange = moment(_.last(this.state.stats).Date, 'DD/MM/YYYY').isSameOrAfter(moment().startOf('month'));
       return (
         <span>
           <span>This month: &nbsp;</span>
-          <span><Currency value={_.last(this.state.stats).incoming} color='green' /></span> &nbsp;
-          <span><Currency value={_.last(this.state.stats).outgoing} color='red' /></span>
+          <span><Currency value={inRange ? _.last(this.state.stats).incoming : 0} color='green' /></span> &nbsp;
+          <span><Currency value={inRange ? _.last(this.state.stats).outgoing : 0} color='red' /></span>
         </span>
       );
     }

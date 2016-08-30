@@ -44,6 +44,12 @@ export default class App extends React.Component {
     this.sockets.transactions = window.io('/transactions');
     this.sockets.stats        = window.io('/stats');
 
+    _.each(this.sockets, (socket) => {
+      socket.on('client:error', (err) => {
+        alert(err);
+      });
+    });
+
     this.uploader = new Siofu(this.sockets.statements);
 
     this.sockets.transactions.on('transactions:receive', (err, data) => {
