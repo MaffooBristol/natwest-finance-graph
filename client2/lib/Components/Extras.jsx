@@ -64,11 +64,12 @@ export class MonthStats extends React.Component {
   render () {
     if (this.state && this.state.stats.length) {
       let inRange = moment(_.last(this.state.stats).Date, 'DD/MM/YYYY').isSameOrAfter(moment().startOf('month'));
+      let currencyValue = (key) => inRange ? _.last(this.state.stats)[key] : 0;
       return (
         <span>
           <span>This month: &nbsp;</span>
-          <span><Currency value={inRange ? _.last(this.state.stats).incoming : 0} color='green' /></span> &nbsp;
-          <span><Currency value={inRange ? _.last(this.state.stats).outgoing : 0} color='red' /></span>
+          <span><Currency value={currencyValue('incoming')} color='green' /></span> &nbsp;
+          <span><Currency value={currencyValue('outgoing')} color='red' /></span>
         </span>
       );
     }
