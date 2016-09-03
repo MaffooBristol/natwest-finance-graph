@@ -3458,11 +3458,6 @@
       "from": "ignore@>=3.1.2 <4.0.0",
       "resolved": "https://registry.npmjs.org/ignore/-/ignore-3.1.3.tgz"
     },
-    "ignore-styles": {
-      "version": "4.0.0",
-      "from": "ignore-styles@latest",
-      "resolved": "https://registry.npmjs.org/ignore-styles/-/ignore-styles-4.0.0.tgz"
-    },
     "immutable": {
       "version": "3.8.1",
       "from": "immutable@>=3.7.6 <4.0.0",
@@ -4838,8 +4833,8 @@
     },
     "react-dropzone": {
       "version": "3.5.3",
-      "from": "react-dropzone@latest",
-      "resolved": "https://registry.npmjs.org/react-dropzone/-/react-dropzone-3.5.3.tgz"
+      "from": "maffoobristol/react-dropzone#patch-1",
+      "resolved": "git://github.com/maffoobristol/react-dropzone.git#027d1e1c75706c27ac0e051951ba7f38cb54f2de"
     },
     "react-dygraphs": {
       "version": "0.0.1",

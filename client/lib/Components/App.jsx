@@ -52,13 +52,6 @@ export default class App extends React.Component {
 
     this.uploader = new Siofu(this.sockets.statements);
 
-    this.sockets.transactions.on('transactions:receive', (err, data) => {
-      if (err) {
-        return console.error(err);
-      }
-      this.setState({transactions: data});
-    });
-
     this.sockets.statements.on('statements:receive', _.throttle((err, files) => {
       if (err) {
         console.error(err.stack);
@@ -68,12 +61,12 @@ export default class App extends React.Component {
   }
   onDrop = (files) => {
     this.uploader.submitFiles(files);
-    this.uploader.addEventListener('error', () => {
-      // @todo: Handle errors.
+    this.uploader.addEventListener('error', (err) => {
+      alert(`Error: ${err.message}`);
     });
   }
   // @todo: Put this into the render function JSX when not so buggy:
-  // <TransactionList socket={this.socket} transactions={this.state.transactions} />
+  // <TransactionList sockets={this.sockets} />
   render () {
     return (
       <div>
@@ -81,8 +74,9 @@ export default class App extends React.Component {
           <StatementList sockets={this.sockets} statements={this.state.statements} onDrop={this.onDrop} />
         </div>
         <div style={styles.mainContent}>
-          <Balance sockets={this.sockets} transactions={this.state.transactions} />
+          <Balance sockets={this.sockets} />
           <Chart sockets={this.sockets} className='finance-chart' id='chart' />
+          <TransactionList sockets={this.sockets} />
         </div>
       </div>
     );

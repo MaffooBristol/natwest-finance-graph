@@ -32,15 +32,26 @@ export class Currency extends React.Component {
 }
 
 export class Balance extends React.Component {
+  componentWillMount () {
+    this.setState({transactions: []});
+    this.props.sockets.transactions.on('transactions:receive', (err, data) => {
+      if (err) {
+        return console.error(err);
+      }
+      if (data.id === 'Balance') {
+        this.setState({transactions: data.data});
+      }
+    });
+  }
   componentDidMount () {
     this.props.sockets.transactions.emit('transactions:request', {id: 'Balance', filter: 'none'});
   }
   render () {
-    if (this.props.transactions.length && _.last(this.props.transactions)) {
+    if (this.state.transactions.length && _.last(this.state.transactions)) {
       return (
         <div style={style.balance}>
           <MonthStats sockets={this.props.sockets} /> &nbsp;
-          <span>Balance: <Currency value={_.last(this.props.transactions).Balance} /></span>
+          <span>Balance: <Currency value={_.last(this.state.transactions).Balance} /></span>
         </div>
       );
     }

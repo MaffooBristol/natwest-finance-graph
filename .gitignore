@@ -6,3 +6,5 @@ node_modules
 *.bak
 legacy_client/public
 .eslintcache
+.taxexclusions*
+

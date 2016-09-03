@@ -55,7 +55,7 @@ export class Chart extends React.Component {
     // This is required because setState doesn't finish until next tick.
     setTimeout(() => {
       this.props.sockets.stats.emit('stats:request', {id: 'Chart', groupBy: this.state.groupBy});
-    }, 500);
+    }, 5);
   }
 
   toggleLine (line) {
