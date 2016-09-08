@@ -3,7 +3,8 @@
 import React from 'react';
 import _     from 'lodash';
 
-import Table from './TransactionsTable.jsx';
+import Table  from './TransactionsTable.jsx';
+import Search from './TransactionsSearch.jsx';
 
 const style = {
   tableContainer: {
@@ -14,17 +15,6 @@ const style = {
     marginBottom: '40px'
   }
 };
-
-class Search extends React.Component {
-  handleChange (e) {
-    this.props.handleSearch(e.target.value);
-  }
-  render () {
-    return (
-      <input type='text' placeholder='Search' onChange={this.handleChange.bind(this)} />
-    );
-  }
-}
 
 export default class TransactionList extends React.Component {
   constructor () {
