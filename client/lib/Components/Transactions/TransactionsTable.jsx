@@ -2,9 +2,14 @@
 
 import React from 'react';
 import _     from 'lodash';
-import Base  from '../../../lib/base.js';
+import Base  from '../../../../lib/base.js';
 
 const style = {
+  loading: {
+    textAlign: 'center',
+    paddingTop: '20%',
+    color: '#999'
+  },
   table: {
     fontSize: '0.8em',
     width: '100%',
@@ -48,52 +53,22 @@ class TableRow extends React.Component {
   }
 }
 
-class Table extends React.Component {
+export default class Table extends React.Component {
   render () {
+    if (!this.props.initRows.length) {
+      return <div style={style.loading}>Loading transactions table...</div>;
+    }
     return (
       <table style={style.table}>
         <thead style={style.table.header}>
           {_.map(['Date', 'Type', 'Value', 'Balance', 'Description'], (key) => {
-            return <th style={style.table.header.cell}>{key}</th>;
+            return <th style={style.table.header.cell} key={key}>{key}</th>;
           })}
         </thead>
         <tbody>
-          {_.map(this.props.rows, (row) => <TableRow cells={row} />)}
+          {_.map(this.props.rows, (row, index) => <TableRow cells={row} key={index} />)}
         </tbody>
       </table>
-    );
-  }
-}
-
-export default class TransactionList extends React.Component {
-
-  constructor () {
-    super();
-    this.state = {transactions: []};
-  }
-
-  componentWillMount () {
-    this.props.sockets.transactions.on('transactions:receive', (err, data) => {
-      if (err) {
-        return console.error(err);
-      }
-      if (data.id === 'TransactionsList') {
-        this.setState({transactions: _.reverse(data.data).splice(0, 100)});
-      }
-    });
-  }
-
-  componentDidMount () {
-    this.props.sockets.transactions.emit('transactions:request', {id: 'TransactionsList'});
-  }
-
-  render () {
-    if (!this.state.transactions.length) return null;
-    // Date, Type, Description, Value, Balance, Account Name, Account Number
-    return (
-      <div>
-        <Table rows={this.state.transactions} />
-      </div>
     );
   }
 }

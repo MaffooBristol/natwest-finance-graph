@@ -8,7 +8,7 @@ import Siofu  from 'socketio-file-upload';
 import {Chart}         from './Chart.jsx';
 import {Balance}       from './Extras.jsx';
 import StatementList   from './Statements.jsx';
-import TransactionList from './Transactions.jsx';
+import TransactionList from './Transactions/Transactions.jsx';
 
 const styles = {
   leftBar: {
@@ -65,8 +65,6 @@ export default class App extends React.Component {
       alert(`Error: ${err.message}`);
     });
   }
-  // @todo: Put this into the render function JSX when not so buggy:
-  // <TransactionList sockets={this.sockets} />
   render () {
     return (
       <div>
