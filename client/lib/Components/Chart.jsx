@@ -13,6 +13,7 @@ const style = {
   fontFamily: 'Helvetica, Arial, sans-serif',
   padding: '20px',
   border: '1px solid #ccc',
+  marginBottom: '30px',
   actions: {
     marginBottom: 10,
     action: {
@@ -35,11 +36,19 @@ export class Chart extends React.Component {
     this.props.sockets.stats.on('stats:receive', (err, data) => {
       if (err) {
         console.error(err.stack);
+        return;
       }
       if (data.id !== 'Chart') {
         return;
       }
       this.setState({stats: data.data});
+    });
+    this.props.sockets.statements.on('statements:receive', (err) => {
+      if (err) {
+        console.log(err.stack);
+        return;
+      }
+      this.loadData();
     });
     this.setState({displayLines: {incoming: true, outgoing: true}});
   }
@@ -55,7 +64,7 @@ export class Chart extends React.Component {
     // This is required because setState doesn't finish until next tick.
     setTimeout(() => {
       this.props.sockets.stats.emit('stats:request', {id: 'Chart', groupBy: this.state.groupBy});
-    }, 5);
+    }, 0);
   }
 
   toggleLine (line) {

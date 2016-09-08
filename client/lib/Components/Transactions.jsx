@@ -1,23 +1,69 @@
 'use strict';
 
-// This is shit atm because all the table modules aren't very good.
-
 import React from 'react';
-import _ from 'lodash';
-import {Table, Column, Cell} from 'fixed-data-table';
+import _     from 'lodash';
+import Base  from '../../../lib/base.js';
 
-const TextCell = ({rowIndex, data, col, ...props}) => {
-  let cellData = data[rowIndex][col];
-  let {toFixed, ...rest} = props;
-  if (toFixed !== undefined && toFixed) {
-    cellData = cellData.toFixed(toFixed);
+const style = {
+  table: {
+    fontSize: '0.8em',
+    width: '100%',
+    borderCollapse: 'collapse',
+    header: {
+      cell: {
+        padding: '5px 8px',
+        background: '#ddd',
+        border: '1px solid #aaa'
+      }
+    },
+    row: {
+      border: '1px solid #aaa',
+      cell: {
+        padding: '5px 8px',
+        background: 'white',
+        border: '1px solid #ddd'
+      }
+    }
   }
-  return (
-    <Cell {...rest}>
-      {cellData}
-    </Cell>
-  );
 };
+
+class TableCell extends React.Component {
+  render () {
+    return <td style={style.table.row.cell}>{this.props.value}</td>;
+  }
+}
+
+class TableRow extends React.Component {
+  render () {
+    let cells = [
+      <TableCell value={this.props.cells.Date} />,
+      <TableCell value={this.props.cells.Type} />,
+      <TableCell value={Base.formatCurrency(this.props.cells.Value)} />,
+      <TableCell value={Base.formatCurrency(this.props.cells.Balance)} />,
+      <TableCell value={this.props.cells.Description} />
+    ];
+    return (
+      <tr>{cells}</tr>
+    );
+  }
+}
+
+class Table extends React.Component {
+  render () {
+    return (
+      <table style={style.table}>
+        <thead style={style.table.header}>
+          {_.map(['Date', 'Type', 'Value', 'Balance', 'Description'], (key) => {
+            return <th style={style.table.header.cell}>{key}</th>;
+          })}
+        </thead>
+        <tbody>
+          {_.map(this.props.rows, (row) => <TableRow cells={row} />)}
+        </tbody>
+      </table>
+    );
+  }
+}
 
 export default class TransactionList extends React.Component {
 
@@ -32,7 +78,7 @@ export default class TransactionList extends React.Component {
         return console.error(err);
       }
       if (data.id === 'TransactionsList') {
-        this.setState({transactions: data.data.splice(0, 100)});
+        this.setState({transactions: _.reverse(data.data).splice(0, 100)});
       }
     });
   }
@@ -44,52 +90,9 @@ export default class TransactionList extends React.Component {
   render () {
     if (!this.state.transactions.length) return null;
     // Date, Type, Description, Value, Balance, Account Name, Account Number
-    let style = {
-      fontSize: '0.8em'
-    };
-    // let transactions = _.reverse(this.state.transactions);
-    // console.log(_.first(this.state.transactions), _.first(transactions));
     return (
       <div>
-        <Table
-          rowHeight={25}
-          rowsCount={this.state.transactions.length}
-          headerHeight={35}
-          width={1000}
-          height={500}
-          style={style}
-          {...this.props}>
-          <Column
-            header={<Cell>Date</Cell>}
-            cell={<TextCell data={this.state.transactions} col='Date' />}
-            fixed={true}
-            width={100}
-          />
-          <Column
-            header={<Cell>Type</Cell>}
-            cell={<TextCell data={this.state.transactions} col='Type' />}
-            fixed={true}
-            width={50}
-          />
-          <Column
-            header={<Cell>Description</Cell>}
-            cell={<TextCell data={this.state.transactions} col='Description' />}
-            fixed={true}
-            width={650}
-          />
-          <Column
-            header={<Cell>Value</Cell>}
-            cell={<TextCell data={this.state.transactions} col='Value' toFixed={2} />}
-            fixed={true}
-            width={100}
-          />
-          <Column
-            header={<Cell>Balance</Cell>}
-            cell={<TextCell data={this.state.transactions} col='Balance' toFixed={2} />}
-            fixed={true}
-            width={100}
-          />
-        </Table>
+        <Table rows={this.state.transactions} />
       </div>
     );
   }
