@@ -3,6 +3,7 @@
 import fs       from 'fs';
 import path     from 'path';
 import inquirer from 'inquirer';
+import chalk    from 'chalk';
 
 import CLI    from './lib/cli';
 import Server from './lib/server';
@@ -52,13 +53,10 @@ const actions = {
         });
         break;
       case 'rebuild_cache':
-        return Transactions.setCache().then(() => {
-          console.log('The cache was rebuilt.');
-        }).catch((err) => {
-          console.error(`Caught an error: ${err.message}`);
-        }).error((err) => {
-          console.error(`Uncaught error: ${err.message}`);
-        });
+        return Transactions.setCache()
+        .then(() => console.log('The cache was rebuilt.'))
+        .catch(() => console.error(chalk.red('Could not save the cache. Is couchbase running?')))
+        .error(() => console.error(chalk.red('Could not save the cache. Is couchbase running?')));
       default:
         console.warn(`Did not understand the action ${answers.action}`);
         break;
