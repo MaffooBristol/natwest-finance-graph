@@ -54,9 +54,8 @@ const actions = {
         break;
       case 'rebuild_cache':
         return Transactions.setCache()
-        .then(() => console.log('The cache was rebuilt.'))
-        .catch(() => console.error(chalk.red('Could not save the cache. Is couchbase running?')))
-        .error(() => console.error(chalk.red('Could not save the cache. Is couchbase running?')));
+          .then(() => console.log('The cache was rebuilt.'))
+          .catch(() => console.error(chalk.red('Could not save the cache. Is couchbase running?')));
       default:
         console.warn(`Did not understand the action ${answers.action}`);
         break;
