@@ -39,7 +39,7 @@
     "react-addons-shallow-compare": "^15.3.0",
     "react-addons-update": "^15.3.0",
     "react-dom": "^15.3.0",
-    "react-dropzone": "github:maffoobristol/react-dropzone#patch-1",
+    "react-dropzone": "^3.6.0",
     "react-dygraphs": "0.0.1",
     "react-virtualized": "^7.19.3",
     "socket.io": "^1.4.8",
