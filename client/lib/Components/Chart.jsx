@@ -6,8 +6,6 @@ import _       from 'lodash';
 import Moment  from 'moment';
 import Dygraph from 'react-dygraphs';
 
-const averageWidth = 200;
-
 const style = {
   backgroundColor: 'white',
   fontFamily: 'Helvetica, Arial, sans-serif',
@@ -23,31 +21,31 @@ const style = {
   }
 };
 
+const displayLines = {
+  incoming: {label: 'Incoming', color: '#6d6'},
+  outgoing: {label: 'Outgoing', color: '#d66'},
+  net: {label: 'Net', color: '#6ad'},
+  balance: {label: 'Balance', color: '#999'}
+};
+
+const groupButtonValues = [
+  ['Day', 'day'],
+  ['Weeks', 'isoWeek'],
+  ['Months', 'month'],
+  ['Year', 'year']
+];
+
 export class Chart extends React.Component {
 
   componentWillMount () {
-    this.displayLines = {
-      incoming: {label: 'Incoming', color: '#6d6'},
-      outgoing: {label: 'Outgoing', color: '#d66'},
-      net: {label: 'Net', color: '#6ad'},
-      balance: {label: 'Balance', color: '#999'}
-    };
     this.setState({groupBy: 'isoWeek'});
     this.props.sockets.stats.on('stats:receive', (err, data) => {
-      if (err) {
-        console.error(err.stack);
-        return;
-      }
-      if (data.id !== 'Chart') {
-        return;
-      }
+      if (err) return console.error(err.stack);
+      if (data.id !== 'Chart') return;
       this.setState({stats: data.data});
     });
     this.props.sockets.statements.on('statements:receive', (err) => {
-      if (err) {
-        console.log(err.stack);
-        return;
-      }
+      if (err) return console.log(err.stack);
       this.loadData();
     });
     this.setState({displayLines: {incoming: true, outgoing: true}});
@@ -70,40 +68,29 @@ export class Chart extends React.Component {
   toggleLine (line) {
     this.setState({
       displayLines: update(this.state.displayLines, {
-        $merge: {
-          [line]: !this.state.displayLines[line]
-        }
+        $merge: {[line]: !this.state.displayLines[line]}
       })
     });
   }
 
   render () {
-    if (!this.state.stats || !this.state.stats.length) {
-      return <div />;
-    }
+    if (!this.state.stats || !this.state.stats.length) return <div>Loading chart...</div>;
 
     let graphData = _.map(this.state.stats, (row, index) => {
       let output = [new Date(Moment(row.Date, 'DD/MM/YYYY'))];
-      _.each(this.displayLines, (displayLine, key) => {
-        if (!this.state.displayLines[key]) {
-          return;
-        }
+      _.each(displayLines, (displayLine, key) => {
+        if (!this.state.displayLines[key]) return;
         switch (key) {
           case 'incoming':
-            output.push(parseFloat(row.incoming));
-            break;
+            output.push(parseFloat(row.incoming)); break;
           case 'outgoing':
-            output.push(-parseFloat(row.outgoing));
-            break;
+            output.push(-parseFloat(row.outgoing)); break;
           case 'net':
-            output.push(parseFloat(row.net));
-            break;
+            output.push(parseFloat(row.net)); break;
           case 'balance':
-            output.push(parseFloat(row.balance));
-            break;
+            output.push(parseFloat(row.balance)); break;
           default:
-            output.push(0);
-            break;
+            output.push(0); break;
         }
       });
       return output;
@@ -111,26 +98,19 @@ export class Chart extends React.Component {
 
     let labels = ['Date'];
     let colors = [];
-    let displayLinesButtons = [];
-
-    _.each(this.displayLines, (displayLine, key) => {
+    let displayLinesButtons = _.map(displayLines, (displayLine, key) => {
       if (this.state.displayLines[key]) {
         labels.push(displayLine.label);
         colors.push(displayLine.color);
       }
-      displayLinesButtons.push(
-        <button
-          style={style.actions.action}
-          onClick={this.toggleLine.bind(this, key)}
-          key={key}>
+      return (
+        <button style={style.actions.action} onClick={this.toggleLine.bind(this, key)} key={key}>
           {displayLine.label}
         </button>
       );
     });
-
-    let groupButtons = [];
-    [['Day', 'day'], ['Weeks', 'isoWeek'], ['Months', 'month'], ['Year', 'year']].forEach((groupBy) => {
-      groupButtons.push(
+    let groupButtons = _.map(groupButtonValues, (groupBy) => {
+      return (
         <button
           style={style.actions.action}
           disabled={this.state.groupBy === groupBy[1]}
