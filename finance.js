@@ -22,7 +22,6 @@ global.paths = {
 global.currency = '£';
 
 const cli = new CLI();
-const flags = cli.flags;
 
 // I want to rewrite this or move it somewhere or just generally make it
 // far more streamlined!
@@ -30,14 +29,17 @@ const actions = {
   main: (answers) => {
     switch (answers.action) {
       case 'server':
+      case 'serve':
         return new Server({port: global.port});
       case 'view_all':
+      case 'view':
         return new List();
       case 'view_incoming':
         return new List({filter: 'incoming'});
       case 'view_outgoing':
         return new List({filter: 'outgoing'});
-      case 'do_taxes':
+      case 'taxes':
+      case 'tax':
         inquirer.prompt([{
           type: 'list',
           name: 'taxYear',
@@ -53,9 +55,13 @@ const actions = {
         });
         break;
       case 'rebuild_cache':
+      case 'cc':
         return Transactions.setCache()
           .then(() => console.log('The cache was rebuilt.'))
           .catch(() => console.error(chalk.red('Could not save the cache. Is couchbase running?')));
+      case 'help':
+        console.log('Did you mean badger --help?');
+        break;
       default:
         console.warn(`Did not understand the action ${answers.action}`);
         break;
@@ -63,8 +69,8 @@ const actions = {
   }
 };
 
-if (cli.flags && flags.action) {
-  actions.main({action: flags.action});
+if (cli.selection) {
+  actions.main({action: cli.selection});
 }
 else {
   cli.prompt().then(actions.main);

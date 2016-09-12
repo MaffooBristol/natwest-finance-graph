@@ -1,7 +1,7 @@
 apps:
   - script: index.js
     name: 'MoneyBadger'
-    args: '--action=server'
+    args: 'serve'
     instances: 1
     exec_mode: cluster
     watch  : ['index.js', 'finance.js', 'lib', 'node_modules', 'package.json']

@@ -2362,6 +2362,18 @@
       "from": "fancy-log@>=1.1.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/fancy-log/-/fancy-log-1.2.0.tgz"
     },
+    "farmhash": {
+      "version": "1.2.1",
+      "from": "farmhash@latest",
+      "resolved": "https://registry.npmjs.org/farmhash/-/farmhash-1.2.1.tgz",
+      "dependencies": {
+        "nan": {
+          "version": "2.4.0",
+          "from": "nan@>=2.4.0 <3.0.0",
+          "resolved": "https://registry.npmjs.org/nan/-/nan-2.4.0.tgz"
+        }
+      }
+    },
     "fast-levenshtein": {
       "version": "1.1.4",
       "from": "fast-levenshtein@>=1.1.0 <2.0.0",
