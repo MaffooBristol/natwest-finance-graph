@@ -23,7 +23,7 @@ export class Currency extends React.Component {
     this.setState({currency: '£'});
   }
   render () {
-    let thisStyle = _.extend({}, style.currency);
+    const thisStyle = _.extend({}, style.currency);
     if (this.props.color) {
       thisStyle.color = this.props.color;
     }
@@ -74,8 +74,8 @@ export class MonthStats extends React.Component {
   }
   render () {
     if (this.state && this.state.stats.length) {
-      let inRange = moment(_.last(this.state.stats).Date, 'DD/MM/YYYY').isSameOrAfter(moment().startOf('month'));
-      let currencyValue = (key) => inRange ? _.last(this.state.stats)[key] : 0;
+      const inRange = moment(_.last(this.state.stats).Date, 'DD/MM/YYYY').isSameOrAfter(moment().startOf('month'));
+      const currencyValue = (key) => inRange ? _.last(this.state.stats)[key] : 0;
       return (
         <span>
           <span>This month: &nbsp;</span>

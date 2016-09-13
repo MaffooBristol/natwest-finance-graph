@@ -55,7 +55,7 @@ class StatementList extends React.Component {
     this.props.sockets.statements.emit('statements:request');
   }
   render () {
-    let rows = [];
+    const rows = [];
     this.props.statements.forEach((statement) => {
       rows.push(<StatementRow statement={statement} key={statement.filename} />);
     });

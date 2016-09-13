@@ -76,8 +76,8 @@ export class Chart extends React.Component {
   render () {
     if (!this.state.stats || !this.state.stats.length) return <div>Loading chart...</div>;
 
-    let graphData = _.map(this.state.stats, (row, index) => {
-      let output = [new Date(Moment(row.Date, 'DD/MM/YYYY'))];
+    const graphData = _.map(this.state.stats, (row, index) => {
+      const output = [new Date(Moment(row.Date, 'DD/MM/YYYY'))];
       _.each(displayLines, (displayLine, key) => {
         if (!this.state.displayLines[key]) return;
         switch (key) {
@@ -96,9 +96,9 @@ export class Chart extends React.Component {
       return output;
     });
 
-    let labels = ['Date'];
-    let colors = [];
-    let displayLinesButtons = _.map(displayLines, (displayLine, key) => {
+    const labels = ['Date'];
+    const colors = [];
+    const displayLinesButtons = _.map(displayLines, (displayLine, key) => {
       if (this.state.displayLines[key]) {
         labels.push(displayLine.label);
         colors.push(displayLine.color);
@@ -109,7 +109,7 @@ export class Chart extends React.Component {
         </button>
       );
     });
-    let groupButtons = _.map(groupButtonValues, (groupBy) => {
+    const groupButtons = _.map(groupButtonValues, (groupBy) => {
       return (
         <button
           style={style.actions.action}

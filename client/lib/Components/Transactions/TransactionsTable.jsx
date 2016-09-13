@@ -40,7 +40,7 @@ class TableCell extends React.Component {
 
 class TableRow extends React.Component {
   render () {
-    let cells = [
+    const cells = [
       <TableCell value={this.props.cells.Date} />,
       <TableCell value={this.props.cells.Type} />,
       <TableCell value={Base.formatCurrency(this.props.cells.Value)} />,

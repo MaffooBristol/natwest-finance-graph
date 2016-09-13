@@ -50,7 +50,7 @@ export default class TransactionList extends React.Component {
     return this.setState({transactions: filteredRows});
   }
   handleSearch (search) {
-    this.filter({search: search});
+    this.filter({search});
   }
   render () {
     return (
