@@ -2,7 +2,8 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "standard"
+    "standard",
+    "plugin:destructuring/recommended"
   ],
   "parser": "babel-eslint",
   "env": {
@@ -11,7 +12,8 @@
     "mocha": true
   },
   "plugins": [
-    "react"
+    "react",
+    "destructuring"
   ],
   "rules": {
     "semi": [2, "always"],
