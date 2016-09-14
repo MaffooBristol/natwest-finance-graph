@@ -2,8 +2,7 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "standard",
-    "plugin:destructuring/recommended"
+    "standard"
   ],
   "parser": "babel-eslint",
   "env": {
