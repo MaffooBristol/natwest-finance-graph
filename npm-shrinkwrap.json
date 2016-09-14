@@ -205,6 +205,28 @@
       "from": "attr-accept@>=1.0.3 <2.0.0",
       "resolved": "https://registry.npmjs.org/attr-accept/-/attr-accept-1.0.3.tgz"
     },
+    "autoprefixer": {
+      "version": "6.3.7",
+      "from": "autoprefixer@latest",
+      "resolved": "https://registry.npmjs.org/autoprefixer/-/autoprefixer-6.3.7.tgz",
+      "dependencies": {
+        "postcss": {
+          "version": "5.0.21",
+          "from": "postcss@>=5.0.21 <6.0.0",
+          "resolved": "https://registry.npmjs.org/postcss/-/postcss-5.0.21.tgz"
+        },
+        "source-map": {
+          "version": "0.5.6",
+          "from": "source-map@>=0.5.5 <0.6.0",
+          "resolved": "https://registry.npmjs.org/source-map/-/source-map-0.5.6.tgz"
+        },
+        "supports-color": {
+          "version": "3.1.2",
+          "from": "supports-color@>=3.1.2 <4.0.0",
+          "resolved": "https://registry.npmjs.org/supports-color/-/supports-color-3.1.2.tgz"
+        }
+      }
+    },
     "aws-sign2": {
       "version": "0.6.0",
       "from": "aws-sign2@>=0.6.0 <0.7.0",
@@ -1308,6 +1330,11 @@
       "from": "braces@>=1.8.2 <2.0.0",
       "resolved": "https://registry.npmjs.org/braces/-/braces-1.8.3.tgz"
     },
+    "brfs": {
+      "version": "1.4.3",
+      "from": "brfs@latest",
+      "resolved": "https://registry.npmjs.org/brfs/-/brfs-1.4.3.tgz"
+    },
     "brorand": {
       "version": "1.0.5",
       "from": "brorand@>=1.0.1 <2.0.0",
@@ -1725,6 +1752,18 @@
       "version": "1.0.0",
       "from": "css-modules-loader-core@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/css-modules-loader-core/-/css-modules-loader-core-1.0.0.tgz"
+    },
+    "css-modulesify": {
+      "version": "0.25.1",
+      "from": "css-modulesify@latest",
+      "resolved": "https://registry.npmjs.org/css-modulesify/-/css-modulesify-0.25.1.tgz",
+      "dependencies": {
+        "object-assign": {
+          "version": "3.0.0",
+          "from": "object-assign@>=3.0.0 <4.0.0",
+          "resolved": "https://registry.npmjs.org/object-assign/-/object-assign-3.0.0.tgz"
+        }
+      }
     },
     "css-parse": {
       "version": "1.7.0",
