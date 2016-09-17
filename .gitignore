@@ -7,4 +7,5 @@ node_modules
 legacy_client/public
 .eslintcache
 .taxexclusions*
-
+dist/
+build/
