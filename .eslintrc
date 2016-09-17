@@ -3,8 +3,7 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "standard",
-    "plugin:import/errors",
-    "plugin:import/warnings"
+    "plugin:destructuring/recommended"
   ],
   "parser": "babel-eslint",
   "env": {
@@ -13,7 +12,8 @@
     "mocha": true
   },
   "plugins": [
-    "react"
+    "react",
+    "destructuring"
   ],
   "rules": {
     "semi": [2, "always"],
@@ -26,15 +26,9 @@
     "brace-style": [2, "stroustrup", { "allowSingleLine": true }],
     "prefer-const": 2,
     "no-const-assign": 2,
-    "no-param-reassign": 2,
     "no-var": 2,
     "object-shorthand": 2,
     "prefer-template": 2,
-    "require-jsdoc": [1, { "require": { "FunctionDeclaration": true, "MethodDefinition": true, "ClassDeclaration": true } }],
-    "func-style": [2, "expression"],
-    "prefer-arrow-callback": 1,
-    "arrow-spacing": [2, { "before": true, "after": true }],
-    "no-dupe-class-members": 2,
-    "dot-notation": 1
+    "require-jsdoc": [1, { "require": { "FunctionDeclaration": true, "MethodDefinition": true, "ClassDeclaration": true } }]
   }
 }
