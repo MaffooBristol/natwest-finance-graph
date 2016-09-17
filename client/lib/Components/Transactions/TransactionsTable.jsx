@@ -2,7 +2,6 @@
 
 import React from 'react';
 import _     from 'lodash';
-import Base  from '../../../../lib/base.js';
 
 const style = {
   loading: {
@@ -32,28 +31,63 @@ const style = {
   }
 };
 
+/**
+ * Transactions data table cell.
+ */
 class TableCell extends React.Component {
+  /**
+   * Returns a single cell with the "value" taken in from the props.
+   *
+   * @return {ReactElement}
+   */
   render () {
     return <td style={style.table.row.cell}>{this.props.value}</td>;
   }
 }
 
+/**
+ * Transactions data table row.
+ */
 class TableRow extends React.Component {
+  /**
+   * Format currency based on the global value or the default.
+   *
+   * @param {Number (float)} val
+   *   The numeric value that will be formatted as currency.
+   *
+   * @return {String}
+   *   String output of the currency, to two decimal places and with symbol.
+   */
+  static formatCurrency (val, currency = '£') {
+    return `${currency !== false ? currency : ''}${parseFloat(val).toFixed(2)}`;
+  }
+  /**
+   * Returns a single table row with the "cells" taken in from the props.
+   *
+   * @return {ReactElement}
+   */
   render () {
-    const cells = [
-      <TableCell value={this.props.cells.Date} />,
-      <TableCell value={this.props.cells.Type} />,
-      <TableCell value={Base.formatCurrency(this.props.cells.Value)} />,
-      <TableCell value={Base.formatCurrency(this.props.cells.Balance)} />,
-      <TableCell value={this.props.cells.Description} />
-    ];
     return (
-      <tr>{cells}</tr>
+      <tr>
+        <TableCell value={this.props.cells.Date} />
+        <TableCell value={this.props.cells.Type} />
+        <TableCell value={TableRow.formatCurrency(this.props.cells.Value)} />
+        <TableCell value={TableRow.formatCurrency(this.props.cells.Balance)} />
+        <TableCell value={this.props.cells.Description} />
+      </tr>
     );
   }
 }
 
+/**
+ * Transactions data table; this is the default export of this class.
+ */
 export default class Table extends React.Component {
+  /**
+   * Returns the data table.
+   *
+   * @return {ReactElement}
+   */
   render () {
     if (!this.props.initRows.length) {
       return <div style={style.loading}>Loading transactions table...</div>;

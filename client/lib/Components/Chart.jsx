@@ -1,10 +1,10 @@
 'use strict';
 
-import React   from 'react';
-import update  from 'react-addons-update';
-import _       from 'lodash';
-import Moment  from 'moment';
-import Dygraph from 'react-dygraphs';
+import React     from 'react';
+import _         from 'lodash';
+import Moment    from 'moment';
+import update    from 'react-addons-update';
+import {Dygraph} from 'react-dygraphs';
 
 const style = {
   backgroundColor: 'white',
@@ -35,10 +35,24 @@ const groupButtonValues = [
   ['Year', 'year']
 ];
 
+/**
+ * The chart that shows the transactions' net, value, etc. over time.
+ */
 export class Chart extends React.Component {
-
+  /**
+   * Extends React.Component.constructor(). Sets default state.
+   */
+  constructor () {
+    super();
+    this.state = {
+      groupBy: 'isoWeek',
+      displayLines: {incoming: true, outgoing: true}
+    };
+  }
+  /**
+   * Before mounting, listen for socket events.
+   */
   componentWillMount () {
-    this.setState({groupBy: 'isoWeek'});
     this.props.sockets.stats.on('stats:receive', (err, data) => {
       if (err) return console.error(err.stack);
       if (data.id !== 'Chart') return;
@@ -48,31 +62,45 @@ export class Chart extends React.Component {
       if (err) return console.log(err.stack);
       this.loadData();
     });
-    this.setState({displayLines: {incoming: true, outgoing: true}});
   }
-
+  /**
+   * When the component has mounted, load in the initial data.
+   */
   componentDidMount () {
     this.loadData();
   }
-
-  loadData (opts) {
-    if (opts && opts.groupBy !== undefined) {
+  /**
+   * Get the stats data (grouped transactions) based on options passed in.
+   *
+   * @param {Object} opts
+   *   An object containing any options to send to the server.
+   */
+  loadData (opts = {}) {
+    if (opts.groupBy !== undefined) {
       this.setState({groupBy: opts.groupBy});
     }
-    // This is required because setState doesn't finish until next tick.
-    setTimeout(() => {
-      this.props.sockets.stats.emit('stats:request', {id: 'Chart', groupBy: this.state.groupBy});
-    }, 0);
+    this.props.sockets.stats.emit('stats:request', {id: 'Chart', groupBy: this.state.groupBy});
   }
-
-  toggleLine (line) {
+  /**
+   * Show and hide (toggle) the graph lines displayed.
+   *
+   * @param {String} lineKey
+   *   The key of the the line as defined in this.state.displayLines.
+   */
+  toggleLine (lineKey) {
+    if (!lineKey) return;
     this.setState({
       displayLines: update(this.state.displayLines, {
-        $merge: {[line]: !this.state.displayLines[line]}
+        $merge: {[lineKey]: !this.state.displayLines[lineKey]}
       })
     });
   }
 
+  /**
+   * Render the chart output. Should be broken down and compontentised.
+   *
+   * @return {ReactElement}
+   */
   render () {
     if (!this.state.stats || !this.state.stats.length) return <div>Loading chart...</div>;
 

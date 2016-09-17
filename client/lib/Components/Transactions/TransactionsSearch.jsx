@@ -11,10 +11,11 @@ export default class Search extends React.Component {
   /**
    * On input change, fire the handleSearch callback passed in via props.
    *
-   * @param {object} e
+   * @param {Object} e
    *   The input DOM event.
    */
   handleChange (e) {
+    console.log(typeof e);
     if (this.props && this.props.handleSearch !== undefined) {
       this.props.handleSearch(e.target.value);
     }

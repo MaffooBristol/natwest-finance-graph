@@ -16,11 +16,22 @@ const style = {
   }
 };
 
+/**
+ * TransactionsList class, shows a filterable list of all transactions.
+ */
 export default class TransactionList extends React.Component {
+  /**
+   * Extends React.Component.constructor(). Sets default state.
+   */
   constructor () {
     super();
     this.state = {initialTransactions: [], transactions: []};
   }
+  /**
+   * Before the component mounts, listen for transactions on the socket.
+   *
+   * When it receives data, set the current state and then filter the list.
+   */
   componentWillMount () {
     this.props.sockets.transactions.on('transactions:receive', (err, data) => {
       if (err) {
@@ -32,9 +43,18 @@ export default class TransactionList extends React.Component {
       }
     });
   }
+  /**
+   * When the component mounts, emit a request for the transactions.
+   */
   componentDidMount () {
     this.props.sockets.transactions.emit('transactions:request', {id: 'TransactionsList'});
   }
+  /**
+   * Filter the transactions data based on the options sent to it.
+   *
+   * @param {Object} filters
+   *   An object containing optional filters, at the moment only string search.
+   */
   filter (filters = {}) {
     let filteredRows = this.state.initialTransactions;
     filteredRows = _.filter(filteredRows, (row, index) => {
@@ -47,11 +67,22 @@ export default class TransactionList extends React.Component {
       return match;
     });
     filteredRows = _.reverse(filteredRows).splice(0, 100);
-    return this.setState({transactions: filteredRows});
+    this.setState({transactions: filteredRows});
   }
+  /**
+   * Filter based on a string search.
+   *
+   * @param {String} search
+   *   The string to search for, transformed to be case-independent.
+   */
   handleSearch (search) {
     this.filter({search});
   }
+  /**
+   * Render out the transactions table, search, pager, anything else, etc.
+   *
+   * @return {ReactElement}
+   */
   render () {
     return (
       <div>

@@ -18,22 +18,50 @@ const style = {
   }
 };
 
+/**
+ * Currency class, returns a styled JSX output of a value as currency.
+ */
 export class Currency extends React.Component {
-  componentWillMount () {
-    this.setState({currency: '£'});
+  /**
+   * Extends React.Component.constructor(). Sets default state.
+   */
+  constructor () {
+    super();
+    this.state = {symbol: '£'};
   }
+  /**
+   * Renders the currency with the correct colours and symbol.
+   *
+   * @return {ReactComponent}
+   */
   render () {
     const thisStyle = _.extend({}, style.currency);
     if (this.props.color) {
       thisStyle.color = this.props.color;
     }
-    return <span style={thisStyle}>{this.state.currency}{this.props.value}</span>;
+    return <span style={thisStyle}>{this.state.symbol}{this.props.value}</span>;
   }
 }
 
+/**
+ * Balance class, shows the current balance. How much money you do/don't have.
+ *
+ * This is kinda a bit pointless as a component, or at least needs to be used
+ * in a more worthwhile way.
+ */
 export class Balance extends React.Component {
+  /**
+   * Extends React.Component.constructor(). Sets default state.
+   */
+  constructor () {
+    super();
+    this.state = {transactions: []};
+  }
+  /**
+   * Before the component mounts, listen for transaction socket events and
+   * set the state accordingly.
+   */
   componentWillMount () {
-    this.setState({transactions: []});
     this.props.sockets.transactions.on('transactions:receive', (err, data) => {
       if (err) {
         return console.error(err);
@@ -43,9 +71,21 @@ export class Balance extends React.Component {
       }
     });
   }
+  /**
+   * After the component mounts, send the request for the transactions.
+   *
+   * @todo: This should take a single item from a tailored socket rather than
+   * get all transactions and filter them in the front-end. This whole system
+   * is meant to be server-first, so this kinda breaks that paradigm.
+   */
   componentDidMount () {
     this.props.sockets.transactions.emit('transactions:request', {id: 'Balance', filter: 'none'});
   }
+  /**
+   * Render out the current balance, with the currency formatted.
+   *
+   * @return {ReactElement}
+   */
   render () {
     if (this.state.transactions.length && _.last(this.state.transactions)) {
       return (
@@ -59,7 +99,15 @@ export class Balance extends React.Component {
   }
 }
 
+/**
+ * Show the stats for the current month, incoming, outgoing, net, etc.
+ *
+ * @todo: Make this more generic so that it can work for any length of time.
+ */
 export class MonthStats extends React.Component {
+  /**
+   * After the component mounts, get the stats grouped by month.
+   */
   componentDidMount () {
     this.props.sockets.stats.emit('stats:request', {id: 'MonthStats', groupBy: 'month'});
     this.props.sockets.stats.on('stats:receive', (err, data) => {
@@ -72,6 +120,9 @@ export class MonthStats extends React.Component {
       this.setState({stats: data.data});
     });
   }
+  /**
+   * Render out the list of stats for the month, or at least relevant ones.
+   */
   render () {
     if (this.state && this.state.stats.length) {
       const inRange = moment(_.last(this.state.stats).Date, 'DD/MM/YYYY').isSameOrAfter(moment().startOf('month'));

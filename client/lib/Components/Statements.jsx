@@ -37,23 +37,55 @@ const style = {
   }
 };
 
+/**
+ * StatementRow class, which returns a row for a statement detail list item.
+ */
 class StatementRow extends React.Component {
-  statementRow (key) {
-    return <div style={style.statements.statement[key]} key={key}>{this.props.statement[key]}</div>;
-  }
+  /**
+   * It's a fucking render function, don't you get what this does yet? ;)
+   *
+   * @return {ReactElement}
+   */
   render () {
     return (
       <li style={style.statements.statement}>
-        {_.map(['filename', 'filesize'], (row) => this.statementRow(row))}
+        {_.map(['filename', 'filesize'], (row) => {
+          return <div style={style.statements.statement[row]} key={row}>{this.props.statement[row]}</div>;
+        })}
       </li>
     );
   }
 }
 
+/**
+ * StatementList class, shows a list of statements.
+ */
 class StatementList extends React.Component {
+  /**
+   * Before the component mounts, fire off a statement request.
+   *
+   * Perhaps this should be in the componentDidMount function?
+   */
   componentWillMount () {
     this.props.sockets.statements.emit('statements:request');
   }
+  /**
+   * Event to handle when a statement is uploaded.
+   *
+   * @param {FileList|Array} files
+   *   An array of files or FileList native type to upload via SIOFU.
+   */
+  onDrop = (files) => {
+    this.props.statementUploader.submitFiles(files);
+    this.props.statementUploader.addEventListener('error', (err) => {
+      alert(`Error: ${err.message}`);
+    });
+  }
+  /**
+   * Render out a list of statements.
+   *
+   * @return {ReactElement}
+   */
   render () {
     const rows = [];
     this.props.statements.forEach((statement) => {
@@ -61,7 +93,7 @@ class StatementList extends React.Component {
     });
     return (
       <div style={style.statements}>
-        <Dropzone onDrop={this.props.onDrop} style={style.dropzone}>
+        <Dropzone onDrop={this.onDrop} style={style.dropzone}>
           <div>Upload</div>
         </Dropzone>
         <ul style={style.statements.list}>{rows}</ul>
