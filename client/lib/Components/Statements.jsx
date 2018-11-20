@@ -1,7 +1,7 @@
 'use strict';
 
-import _        from 'lodash';
-import React    from 'react';
+import _ from 'lodash';
+import React from 'react';
 import Dropzone from 'react-dropzone';
 
 const style = {

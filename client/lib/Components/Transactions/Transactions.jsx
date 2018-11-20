@@ -1,9 +1,9 @@
 'use strict';
 
 import React from 'react';
-import _     from 'lodash';
+import _ from 'lodash';
 
-import Table  from './TransactionsTable.jsx';
+import Table from './TransactionsTable.jsx';
 import Search from './TransactionsSearch.jsx';
 
 const style = {
@@ -66,7 +66,7 @@ export default class TransactionList extends React.Component {
       }
       return match;
     });
-    filteredRows = _.reverse(filteredRows).splice(0, 100);
+    filteredRows = _.reverse(filteredRows).splice(0, 1000);
     this.setState({transactions: filteredRows});
   }
   /**

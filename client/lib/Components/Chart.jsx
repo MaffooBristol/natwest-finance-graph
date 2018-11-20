@@ -1,9 +1,9 @@
 'use strict';
 
-import React     from 'react';
-import _         from 'lodash';
-import Moment    from 'moment';
-import update    from 'react-addons-update';
+import React from 'react';
+import _ from 'lodash';
+import Moment from 'moment';
+import update from 'react-addons-update';
 import {Dygraph} from 'react-dygraphs';
 
 const style = {
@@ -103,6 +103,8 @@ export class Chart extends React.Component {
    */
   render () {
     if (!this.state.stats || !this.state.stats.length) return <div>Loading chart...</div>;
+
+    console.log(this.state.stats);
 
     const graphData = _.map(this.state.stats, (row, index) => {
       const output = [new Date(Moment(row.Date, 'DD/MM/YYYY'))];

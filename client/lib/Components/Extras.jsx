@@ -1,7 +1,7 @@
 'use strict';
 
-import React  from 'react';
-import _      from 'lodash';
+import React from 'react';
+import _ from 'lodash';
 import moment from 'moment';
 
 const style = {

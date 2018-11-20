@@ -1,13 +1,13 @@
 'use strict';
 
-import React  from 'react';
+import React from 'react';
 import update from 'react-addons-update';
-import _      from 'lodash';
-import Siofu  from 'socketio-file-upload';
+import _ from 'lodash';
+import Siofu from 'socketio-file-upload';
 
-import {Chart}         from './Chart.jsx';
-import {Balance}       from './Extras.jsx';
-import StatementList   from './Statements.jsx';
+import {Chart} from './Chart.jsx';
+import {Balance} from './Extras.jsx';
+import StatementList from './Statements.jsx';
 import TransactionList from './Transactions/Transactions.jsx';
 
 const styles = {
