@@ -4,7 +4,7 @@ import React from 'react';
 import _ from 'lodash';
 import Moment from 'moment';
 import update from 'react-addons-update';
-import {Dygraph} from 'react-dygraphs';
+import { Dygraph } from 'react-dygraphs';
 
 const style = {
   backgroundColor: 'white',
@@ -22,10 +22,10 @@ const style = {
 };
 
 const displayLines = {
-  incoming: {label: 'Incoming', color: '#6d6'},
-  outgoing: {label: 'Outgoing', color: '#d66'},
-  net: {label: 'Net', color: '#6ad'},
-  balance: {label: 'Balance', color: '#999'}
+  incoming: { label: 'Incoming', color: '#6d6' },
+  outgoing: { label: 'Outgoing', color: '#d66' },
+  net: { label: 'Net', color: '#6ad' },
+  balance: { label: 'Balance', color: '#999' }
 };
 
 const groupButtonValues = [
@@ -46,7 +46,7 @@ export class Chart extends React.Component {
     super();
     this.state = {
       groupBy: 'isoWeek',
-      displayLines: {incoming: true, outgoing: true}
+      displayLines: { incoming: true, outgoing: true }
     };
   }
   /**
@@ -56,7 +56,7 @@ export class Chart extends React.Component {
     this.props.sockets.stats.on('stats:receive', (err, data) => {
       if (err) return console.error(err.stack);
       if (data.id !== 'Chart') return;
-      this.setState({stats: data.data});
+      this.setState({ stats: data.data });
     });
     this.props.sockets.statements.on('statements:receive', (err) => {
       if (err) return console.log(err.stack);
@@ -77,9 +77,9 @@ export class Chart extends React.Component {
    */
   loadData (opts = {}) {
     if (opts.groupBy !== undefined) {
-      this.setState({groupBy: opts.groupBy});
+      this.setState({ groupBy: opts.groupBy });
     }
-    this.props.sockets.stats.emit('stats:request', {id: 'Chart', groupBy: this.state.groupBy});
+    this.props.sockets.stats.emit('stats:request', { id: 'Chart', groupBy: this.state.groupBy });
   }
   /**
    * Show and hide (toggle) the graph lines displayed.
@@ -91,7 +91,7 @@ export class Chart extends React.Component {
     if (!lineKey) return;
     this.setState({
       displayLines: update(this.state.displayLines, {
-        $merge: {[lineKey]: !this.state.displayLines[lineKey]}
+        $merge: { [lineKey]: !this.state.displayLines[lineKey] }
       })
     });
   }
@@ -144,8 +144,9 @@ export class Chart extends React.Component {
         <button
           style={style.actions.action}
           disabled={this.state.groupBy === groupBy[1]}
-          onClick={this.loadData.bind(this, {groupBy: groupBy[1]})}
-          key={groupBy[1]}>
+          onClick={this.loadData.bind(this, { groupBy: groupBy[1] })}
+          key={groupBy[1]}
+        >
           {groupBy[0]}
         </button>
       );
@@ -159,14 +160,15 @@ export class Chart extends React.Component {
           {displayLinesButtons}
         </div>
         <div style={style}>
-          <Dygraph data={graphData}
-          labels={labels}
-          height={600}
-          colors={colors}
-          gridLineColor={'#ddd'}
-          axisLabelColor={'#666'}
-          axisLineColor={'#666'}
-          axisLabelFontSize={11}
+          <Dygraph
+            data={graphData}
+            labels={labels}
+            height={600}
+            colors={colors}
+            gridLineColor={'#ddd'}
+            axisLabelColor={'#666'}
+            axisLineColor={'#666'}
+            axisLabelFontSize={11}
           />
         </div>
       </div>

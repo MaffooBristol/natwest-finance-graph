@@ -7,7 +7,7 @@
     "build": "run-p build:**",
     "build:server": "BABEL_ENV=server babel lib --out-dir dist",
     "build:client": "browserify -t [babelify --presets es2015 --presets react --presets stage-1] -p [css-modulesify --global -o client/public/bundle.css] -o client/public/bundle.js client/lib/main.jsx",
-    "fix:lint": "npm run test:lint -- --fix-dry-run",
+    "fix:lint": "npm run test:lint -- --fix",
     "watch": "run-p watch:**",
     "watch:server": "BABEL_ENV=server babel lib --watch --out-dir dist",
     "watch:client": "watchify -v -t [babelify --presets es2015 --presets react --presets stage-1] -p [css-modulesify --global -o client/public/bundle.css] -o client/public/bundle.js client/lib/main.jsx",

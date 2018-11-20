@@ -25,7 +25,7 @@ export default class TransactionList extends React.Component {
    */
   constructor () {
     super();
-    this.state = {initialTransactions: [], transactions: []};
+    this.state = { initialTransactions: [], transactions: [] };
   }
   /**
    * Before the component mounts, listen for transactions on the socket.
@@ -38,7 +38,7 @@ export default class TransactionList extends React.Component {
         return console.error(err);
       }
       if (data.id === 'TransactionsList') {
-        this.setState({initialTransactions: data.data});
+        this.setState({ initialTransactions: data.data });
         this.filter();
       }
     });
@@ -47,7 +47,7 @@ export default class TransactionList extends React.Component {
    * When the component mounts, emit a request for the transactions.
    */
   componentDidMount () {
-    this.props.sockets.transactions.emit('transactions:request', {id: 'TransactionsList'});
+    this.props.sockets.transactions.emit('transactions:request', { id: 'TransactionsList' });
   }
   /**
    * Filter the transactions data based on the options sent to it.
@@ -67,7 +67,7 @@ export default class TransactionList extends React.Component {
       return match;
     });
     filteredRows = _.reverse(filteredRows).splice(0, 1000);
-    this.setState({transactions: filteredRows});
+    this.setState({ transactions: filteredRows });
   }
   /**
    * Filter based on a string search.
@@ -76,7 +76,7 @@ export default class TransactionList extends React.Component {
    *   The string to search for, transformed to be case-independent.
    */
   handleSearch (search) {
-    this.filter({search});
+    this.filter({ search });
   }
   /**
    * Render out the transactions table, search, pager, anything else, etc.

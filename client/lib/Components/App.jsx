@@ -5,8 +5,8 @@ import update from 'react-addons-update';
 import _ from 'lodash';
 import Siofu from 'socketio-file-upload';
 
-import {Chart} from './Chart.jsx';
-import {Balance} from './Extras.jsx';
+import { Chart } from './Chart.jsx';
+import { Balance } from './Extras.jsx';
 import StatementList from './Statements.jsx';
 import TransactionList from './Transactions/Transactions.jsx';
 
@@ -51,8 +51,8 @@ export default class App extends React.Component {
     this.attachSockets();
     this.sockets.statements.on('statements:receive', _.throttle((err, files) => {
       if (err) return console.error(err.stack);
-      this.setState({statements: files});
-    }, 1000, {leading: false}));
+      this.setState({ statements: files });
+    }, 1000, { leading: false }));
   }
   /**
    * Create socket connections, channels and other io bits.

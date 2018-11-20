@@ -27,7 +27,7 @@ export class Currency extends React.Component {
    */
   constructor () {
     super();
-    this.state = {symbol: '£'};
+    this.state = { symbol: '£' };
   }
   /**
    * Renders the currency with the correct colours and symbol.
@@ -55,7 +55,7 @@ export class Balance extends React.Component {
    */
   constructor () {
     super();
-    this.state = {transactions: []};
+    this.state = { transactions: [] };
   }
   /**
    * Before the component mounts, listen for transaction socket events and
@@ -67,7 +67,7 @@ export class Balance extends React.Component {
         return console.error(err);
       }
       if (data.id === 'Balance') {
-        this.setState({transactions: data.data});
+        this.setState({ transactions: data.data });
       }
     });
   }
@@ -79,7 +79,7 @@ export class Balance extends React.Component {
    * is meant to be server-first, so this kinda breaks that paradigm.
    */
   componentDidMount () {
-    this.props.sockets.transactions.emit('transactions:request', {id: 'Balance', filter: 'none'});
+    this.props.sockets.transactions.emit('transactions:request', { id: 'Balance', filter: 'none' });
   }
   /**
    * Render out the current balance, with the currency formatted.
@@ -109,7 +109,7 @@ export class MonthStats extends React.Component {
    * After the component mounts, get the stats grouped by month.
    */
   componentDidMount () {
-    this.props.sockets.stats.emit('stats:request', {id: 'MonthStats', groupBy: 'month'});
+    this.props.sockets.stats.emit('stats:request', { id: 'MonthStats', groupBy: 'month' });
     this.props.sockets.stats.on('stats:receive', (err, data) => {
       if (err) {
         return console.error(err.stack);
@@ -117,7 +117,7 @@ export class MonthStats extends React.Component {
       if (data.id !== 'MonthStats') {
         return;
       }
-      this.setState({stats: data.data});
+      this.setState({ stats: data.data });
     });
   }
   /**
