@@ -28,11 +28,16 @@ const displayLines = {
   balance: { label: 'Balance', color: '#999' }
 };
 
-const groupButtonValues = [
+const groupByButtonValues = [
   ['Day', 'day'],
-  ['Weeks', 'isoWeek'],
+  ['Weeks', 'week'],
   ['Months', 'month'],
-  ['Year', 'year']
+  ['Year', 'year'],
+];
+
+const groupByTypeButtonValues = [
+  ['Start of period', 'start'],
+  ['Rolling period', 'rolling'],
 ];
 
 /**
@@ -45,7 +50,9 @@ export class Chart extends React.Component {
   constructor () {
     super();
     this.state = {
-      groupBy: 'isoWeek',
+      groupBy: 'week',
+      groupByType: 'start',
+      groupByNumber: 1,
       displayLines: { incoming: true, outgoing: true }
     };
   }
@@ -76,10 +83,22 @@ export class Chart extends React.Component {
    *   An object containing any options to send to the server.
    */
   loadData (opts = {}) {
+    let groupBy = this.state.groupBy;
+    let groupByType = this.state.groupByType;
+    let groupByNumber = this.state.groupByNumber;
     if (opts.groupBy !== undefined) {
       this.setState({ groupBy: opts.groupBy });
+      groupBy = opts.groupBy;
     }
-    this.props.sockets.stats.emit('stats:request', { id: 'Chart', groupBy: this.state.groupBy });
+    if (opts.groupByType !== undefined) {
+      this.setState({ groupByType: opts.groupByType });
+      groupByType = opts.groupByType;
+    }
+    if (opts.groupByNumber !== undefined) {
+      this.setState({ groupByNumber: opts.groupByNumber });
+      groupByNumber = opts.groupByNumber;
+    }
+    this.props.sockets.stats.emit('stats:request', { id: 'Chart', groupBy, groupByType, groupByNumber });
   }
   /**
    * Show and hide (toggle) the graph lines displayed.
@@ -103,8 +122,6 @@ export class Chart extends React.Component {
    */
   render () {
     if (!this.state.stats || !this.state.stats.length) return <div>Loading chart...</div>;
-
-    console.log(this.state.stats);
 
     const graphData = _.map(this.state.stats, (row, index) => {
       const output = [new Date(Moment(row.Date, 'DD/MM/YYYY'))];
@@ -139,7 +156,7 @@ export class Chart extends React.Component {
         </button>
       );
     });
-    const groupButtons = _.map(groupButtonValues, (groupBy) => {
+    const groupButtons = _.map(groupByButtonValues, (groupBy) => {
       return (
         <button
           style={style.actions.action}
@@ -151,12 +168,23 @@ export class Chart extends React.Component {
         </button>
       );
     });
+    const groupByTypeButtons = (
+      <select onChange={ (event) => this.loadData({ groupByType: event.target.value }) } value={ this.state.groupByType }>
+        {
+          _.map(groupByTypeButtonValues, (groupByType) => {
+            return <option value={groupByType[1]}>{groupByType[0]}</option>;
+          })
+        }
+      </select>
+    );
 
     return (
       <div>
         <div style={style.actions}>
           <button style={style.actions.action} onClick={this.loadData.bind(this, null)}>Refresh</button>
           {groupButtons}
+          {groupByTypeButtons}
+          { /* <input type="number" onChange={ (event) => this.loadData({ groupByNumber: event.target.value }) } value={ this.state.groupByNumber } /> */ }
           {displayLinesButtons}
         </div>
         <div style={style}>
