@@ -172,7 +172,7 @@ export class Chart extends React.Component {
       <select onChange={ (event) => this.loadData({ groupByType: event.target.value }) } value={ this.state.groupByType }>
         {
           _.map(groupByTypeButtonValues, (groupByType) => {
-            return <option value={groupByType[1]}>{groupByType[0]}</option>;
+            return <option value={groupByType[1]} key={groupByType[1]}>{groupByType[0]}</option>;
           })
         }
       </select>

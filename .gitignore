@@ -9,3 +9,5 @@ legacy_client/public
 .taxexclusions*
 dist/
 build/
+.DS_Store
+_old/
